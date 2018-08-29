@@ -1,2 +1,2 @@
 # APR-Website
-Website (in Node.j) for the Autonomous Power Racing League
+Website (in Node.js) for the Autonomous Power Racing League
