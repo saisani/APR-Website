@@ -21,7 +21,7 @@
     "connect-mongo": "~2.0.1",
     "helmet": "~3.13.0",
     "bcrypt": "~3.0.0",
-    "stripe": "~6.8.0",
+    "stripe": "~6.8.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
