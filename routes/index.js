@@ -6,9 +6,15 @@ var stripe = require('stripe')("sk_test_ZVsMj6uyK2zOYAnV57UYeGhl");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	return res.sendFile(path.join(__dirname + '/template/index.html'));
+	// return res.sendFile(path.join(__dirname + '/template/index.html'));
+	return res.redirect('/main');
 });
 
+router.get('/registration', function(req, res, next) {
+	return res.redirect('/registration');
+});
+
+/* Registration and Login Page */
 router.post('/registration', function(req, res, next){
 	if(req.body.loginemail && req.body.loginpassword){
 		User.authenticate(req.body.loginemail, req.body.loginpassword, function (error, user){
@@ -19,7 +25,7 @@ router.post('/registration', function(req, res, next){
 			else {
 				console.log("hit here");
 				req.session.userId = user._id;
-				return res.redirect('/leaderboard');
+				return res.redirect('/welcome');
 			}
 		});
 	}
@@ -27,13 +33,14 @@ router.post('/registration', function(req, res, next){
 		console.log("-----WENT THROUGH FRONT PAGE-----");
 		return res.redirect('/registration');
 	}
-	else{
+	else {
 		console.log("-----You didn't enter anything-----");
 		return res.redirect('/registration');
 	}
 
 });
 
+/* Processing Stripe Payment */
 router.post('/payment', function(req, res, next){
 	if(	req.body.flname &&
 		req.body.schoolname &&
@@ -81,7 +88,7 @@ router.post('/charge', function(req, res, next){
 		}))
 	.then(function(charge) {
 		if(charge.status == "succeeded"){
-			res.redirect('/leaderboard');
+			res.redirect('/welcome');
 		}
 		else {
 			res.redirect('/payment');

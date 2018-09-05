@@ -19,7 +19,7 @@ app.use(helmet());
 
 // setting up mongoose connection
 var mongoDB = 'mongodb://user_alpha:thereddragon2018@ds233212.mlab.com:33212/local_library_power_racing';
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -48,13 +48,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// loading static pages but should switch to a render model
-// atleast for leaderboard
-app.use('/', express.static('routes/template'));
+// loading static pages but should switch to a render model for the leaderboard
+app.use('/', express.static('routes/main_page'));
 app.use('/registration', express.static('routes/login_page'));
 app.use('/payment', express.static('routes/stripe_page'));
+app.use('/welcome', express.static('routes/welcome_page'));
 app.use('/leaderboard', express.static('routes/apr_leaderboard'));
+app.use('/pricing', express.static('routes/pricing_page'));
 
+// routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
