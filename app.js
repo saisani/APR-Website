@@ -50,11 +50,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // loading static pages but should switch to a render model for the leaderboard
 app.use('/', express.static('routes/main_page'));
-app.use('/registration', express.static('routes/login_page'));
+app.use('/registration', express.static('routes/registration_page'));
 app.use('/payment', express.static('routes/stripe_page'));
 app.use('/welcome', express.static('routes/welcome_page'));
 app.use('/leaderboard', express.static('routes/apr_leaderboard'));
 app.use('/pricing', express.static('routes/pricing_page'));
+app.use('/signin', express.static('routes/login_page'));
 
 // routers
 app.use('/', indexRouter);

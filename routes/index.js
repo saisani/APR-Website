@@ -14,46 +14,48 @@ router.get('/registration', function(req, res, next) {
 	return res.redirect('/registration');
 });
 
-/* Registration and Login Page */
-router.post('/registration', function(req, res, next){
-	if(req.body.loginemail && req.body.loginpassword){
-		User.authenticate(req.body.loginemail, req.body.loginpassword, function (error, user){
+router.get('/signin', function(req, res, next) {
+	return res.redirect('/signin');
+});
+
+/* Login Page */
+router.post('/login', function(req, res, next) {
+	if(req.body.email && req.body.password){
+		User.authenticate(req.body.email, req.body.password, function (error, user){
 			if( error || !user){
-				console.log('Wrong Email or Password');
-				return res.redirect('/registration');
+				console.log("Wrong Email or Password");
+				return res.redirect('/signin');
 			}
 			else {
-				console.log("hit here");
+				console.log("Hit here");
 				req.session.userId = user._id;
 				return res.redirect('/welcome');
 			}
 		});
 	}
-	else if(req.body.frontpage_email){
-		console.log("-----WENT THROUGH FRONT PAGE-----");
-		return res.redirect('/registration');
-	}
-	else {
-		console.log("-----You didn't enter anything-----");
-		return res.redirect('/registration');
-	}
-
+	
 });
 
 /* Processing Stripe Payment */
-router.post('/payment', function(req, res, next){
+router.post('/charge', function(req, res, next){
+	
+	let amount = 500;
+
 	if(	req.body.flname &&
 		req.body.schoolname &&
 		req.body.email &&
-		req.body.password)
+		req.body.password &&
+		req.body.teamname )
 	{
 
 		// creating entry for collection
 		var userData = {
 			flname: req.body.flname,
+			teamname: req.body.teamname,
 			schoolname: req.body.schoolname,
 			password: req.body.password,
 			email: req.body.email,
+
 		}
 
 		// adding entry to mongo db?
@@ -63,12 +65,27 @@ router.post('/payment', function(req, res, next){
 				return res.redirect('/registration');
 			}
 			else{
-				req.session.userId = user._id;
-				return res.redirect('/payment');
-			}
+					stripe.customers.create({
+						email: req.body.stripeEmail,
+						source: req.body.stripeToken
+					})
+					.then(customer =>
+							stripe.charges.create({
+							amount,
+							description: "Registration Charge",
+							currency: "usd",
+							customer: customer.id
+					}))
+					.then(function(charge) {
+						if(charge.status == "succeeded"){
+							res.redirect('/welcome');
+						}
+					});
+				}
 		});
 
 	}
+
 });
 
 router.post('/charge', function(req, res, next){
