@@ -7,6 +7,7 @@ var stripe = require('stripe')("sk_test_ZVsMj6uyK2zOYAnV57UYeGhl");
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	// return res.sendFile(path.join(__dirname + '/template/index.html'));
+	console.log(process.env)
 	return res.redirect('/main');
 });
 
