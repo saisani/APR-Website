@@ -7,11 +7,11 @@ var stripe = require('stripe')("sk_test_ZVsMj6uyK2zOYAnV57UYeGhl");
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	// return res.sendFile(path.join(__dirname + '/template/index.html'));
-	console.log(process.env)
-	return res.redirect('/main');
+	return res.redirect('/');
 });
 
 router.get('/registration', function(req, res, next) {
+	
 	return res.redirect('/registration');
 });
 
@@ -21,6 +21,17 @@ router.get('/signin', function(req, res, next) {
 
 /* Login Page */
 router.post('/login', function(req, res, next) {
+	console.log("something");
+	console.log(process.env);
+	if(process.env.GITHUB_USERNAME=="saisani"){
+		return res.redirect('/welcome');
+	}
+	else {
+		return res.redirect('/pricing');
+	}
+	
+
+
 	if(req.body.email && req.body.password){
 		User.authenticate(req.body.email, req.body.password, function (error, user){
 			if( error || !user){
