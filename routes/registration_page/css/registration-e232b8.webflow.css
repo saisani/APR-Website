@@ -60,6 +60,7 @@
 }
 
 .hero-section.centered {
+  margin-bottom: 1px;
   padding-top: 195px;
   padding-bottom: 195px;
   border-bottom: 4px solid #69b9ff;
@@ -71,12 +72,16 @@
 }
 
 .form {
+  height: 500px;
   margin-left: 104px;
 }
 
 .text-field-2 {
-  width: 700px;
-  margin-bottom: 42px;
+  width: 500px;
+  margin-bottom: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .field-label-2 {
@@ -180,27 +185,83 @@
   font-weight: 300;
 }
 
-.field-label-6 {
-  margin-left: -948px;
-  font-family: 'Open Sans', sans-serif;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 300;
-  margin-top: 42px;
-}
-
 .text-field-3 {
-  width: 700px;
+  width: 500px;
   margin-bottom: 42px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .text-field-4 {
-  width: 700px;
-  margin-bottom: 42px;
+  width: 500px;
+  margin-bottom: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .text-field-5 {
-  width: 700px;
+  width: 500px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.div-block {
+  display: block;
+  width: 30%;
+  margin-top: 0px;
+  margin-bottom: 38px;
+  padding-top: 0px;
+  padding-bottom: 2px;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  background-color: hsla(0, 0%, 100%, .5);
+}
+
+.div-block-2 {
+  display: block;
+  width: 30%;
+  margin-top: 38px;
+  margin-bottom: 38px;
+  padding-top: 0px;
+  padding-bottom: 2px;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  background-color: hsla(0, 0%, 100%, .5);
+}
+
+.submit-button-2 {
+  display: block;
+  margin-top: 57px;
+  margin-right: 786px;
+  margin-left: 0px;
+  padding: 20px 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.submit-button-3 {
+  display: block;
+  margin-top: 78px;
+  margin-right: 786px;
+  margin-left: 0px;
+  padding: 20px 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
 }
 
 html.w-mod-js *[data-ix="fade-in-bottom-page-loads"] {

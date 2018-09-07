@@ -1,3 +1,4 @@
+// maybe all required node packages
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -9,23 +10,25 @@ var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
   
+// routers to handle post and getting traffic
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+// starting up app
 var app = express();
 
 // some middleware protection?
 app.use(helmet());
 
 // setting up mongoose connection
-var mongoDB = process.env.MONGO_KEY;
+//var mongoDB = process.env.MONGO_KEY;
+var mongoDB = 'mongodb://user_alpha:thereddragon2018@ds233212.mlab.com:33212/local_library_power_racing';
 mongoose.connect(mongoDB, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // using sessions to track logins??
-// read why
 app.use(session({
   secret: 'work hard',
   resave: true,
@@ -38,7 +41,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// view engine setup
+// view engine setup. don't need it now for current static pages
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 

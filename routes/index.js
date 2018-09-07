@@ -41,7 +41,7 @@ router.post('/login', function(req, res, next) {
 router.post('/charge', function(req, res, next){
 	
 	// registration fee
-	let amount = 500;
+	const AMOUNT = 500;
 
 	if(	req.body.flname &&
 		req.body.schoolname &&
@@ -72,7 +72,7 @@ router.post('/charge', function(req, res, next){
 					})
 					.then(customer =>
 							stripe.charges.create({
-							amount,
+							AMOUNT,
 							description: "Registration Charge",
 							currency: "usd",
 							customer: customer.id
@@ -88,32 +88,5 @@ router.post('/charge', function(req, res, next){
 	}
 
 });
-
-router.post('/charge', function(req, res, next){
-
-	let amount = 500;
-
-	stripe.customers.create({
-		email: req.body.stripeEmail,
-		source: req.body.stripeToken
-	})
-	.then(customer =>
-		stripe.charges.create({
-			amount,
-			description: "Registration Charge",
-			currency: "usd",
-			customer: customer.id
-		}))
-	.then(function(charge) {
-		if(charge.status == "succeeded"){
-			res.redirect('/welcome');
-		}
-		else {
-			res.redirect('/payment');
-		}
-	});
-
-});
-
 
 module.exports = router;

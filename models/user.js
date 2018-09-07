@@ -13,7 +13,6 @@ var UserSchema = new mongoose.Schema({
   },
   schoolname: {
     type: String,
-    required: true,
     trim: true
   },
   password: {
