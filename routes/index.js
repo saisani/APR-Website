@@ -41,14 +41,20 @@ router.post('/login', function(req, res, next) {
 router.post('/charge', function(req, res, next){
 	
 	// registration fee
-	const AMOUNT = 500;
+	const amount = 65;
 
 	if(	req.body.flname &&
 		req.body.schoolname &&
 		req.body.email &&
 		req.body.password &&
+		req.body.password_conf &&
 		req.body.teamname )
 	{
+
+		// make sure the passwords match
+		if( req.body.password != req.body.password_conf ) {
+			return res.redirect('/registration');
+		}
 
 		// creating entry for collection
 		var userData = {
@@ -72,7 +78,7 @@ router.post('/charge', function(req, res, next){
 					})
 					.then(customer =>
 							stripe.charges.create({
-							AMOUNT,
+							amount,
 							description: "Registration Charge",
 							currency: "usd",
 							customer: customer.id
