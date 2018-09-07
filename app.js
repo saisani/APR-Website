@@ -21,8 +21,7 @@ var app = express();
 app.use(helmet());
 
 // setting up mongoose connection
-//var mongoDB = process.env.MONGO_KEY;
-var mongoDB = 'mongodb://user_alpha:thereddragon2018@ds233212.mlab.com:33212/local_library_power_racing';
+var mongoDB = process.env.MONGO_KEY;
 mongoose.connect(mongoDB, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
