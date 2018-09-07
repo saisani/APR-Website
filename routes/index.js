@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var router = express.Router();
 var User = require('../models/user');
-var stripe = require('stripe')("sk_test_ZVsMj6uyK2zOYAnV57UYeGhl");
+var stripe = require('stripe')(process.env.STRIPE_SKEY);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,17 +21,6 @@ router.get('/signin', function(req, res, next) {
 
 /* Login Page */
 router.post('/login', function(req, res, next) {
-	console.log("something");
-	console.log(process.env);
-	if(process.env.GITHUB_USERNAME=="saisani"){
-		return res.redirect('/welcome');
-	}
-	else {
-		return res.redirect('/pricing');
-	}
-	
-
-
 	if(req.body.email && req.body.password){
 		User.authenticate(req.body.email, req.body.password, function (error, user){
 			if( error || !user){
@@ -51,6 +40,7 @@ router.post('/login', function(req, res, next) {
 /* Processing Stripe Payment */
 router.post('/charge', function(req, res, next){
 	
+	// registration fee
 	let amount = 500;
 
 	if(	req.body.flname &&
@@ -67,7 +57,6 @@ router.post('/charge', function(req, res, next){
 			schoolname: req.body.schoolname,
 			password: req.body.password,
 			email: req.body.email,
-
 		}
 
 		// adding entry to mongo db?
