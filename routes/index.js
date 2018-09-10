@@ -41,7 +41,7 @@ router.post('/login', function(req, res, next) {
 router.post('/charge', function(req, res, next){
 	
 	// registration fee
-	const amount = 65;
+	const amount = process.env.FEE_AMOUNT;
 
 	if(	req.body.flname &&
 		req.body.schoolname &&
