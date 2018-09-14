@@ -58,6 +58,7 @@ app.use('/welcome', express.static('routes/welcome_page'));
 app.use('/leaderboard', express.static('routes/apr_leaderboard'));
 app.use('/pricing', express.static('routes/pricing_page'));
 app.use('/signin', express.static('routes/login_page'));
+app.use('/bom', express.static('routes/bom_page'));
 
 // routers
 app.use('/', indexRouter);

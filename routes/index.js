@@ -11,7 +11,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/registration', function(req, res, next) {
-	
 	return res.redirect('/registration');
 });
 
