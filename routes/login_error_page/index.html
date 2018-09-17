@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Fri Sep 07 2018 04:16:23 GMT+0000 (UTC)  -->
-<html data-wf-page="5b8f888899b13e6ba0a251ab" data-wf-site="5b8f888899b13e135fa251aa">
+<!--  Last Published: Mon Sep 17 2018 04:12:16 GMT+0000 (UTC)  -->
+<html data-wf-page="5b9daa0f08470e3145f9b2fe" data-wf-site="5b9daa0f08470e7dc6f9b2fd">
 <head>
   <meta charset="utf-8">
   <title>Login</title>
@@ -9,7 +9,7 @@
   <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
-  <link href="css/login-a3d1e7.webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/error-messages.webflow.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" type="text/javascript"></script>
   <script type="text/javascript">WebFont.load({  google: {    families: ["Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic"]  }});</script>
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
@@ -26,7 +26,6 @@
       <nav role="navigation" class="navigation-menu w-nav-menu">
         <a href="/" class="navigation-link w-nav-link">Home</a>
         <a href="/registration" class="navigation-link w-nav-link">Signup</a></nav>
-      </nav>
       <div class="hamburger-button w-nav-button">
         <div class="w-icon-nav-menu"></div>
       </div>
@@ -37,40 +36,37 @@
       <h1 data-ix="fade-in-bottom-page-loads" class="hero-heading">Sign In</h1>
     </div>
     <div class="w-form">
-      <form method="post" action="/login" id="email-form" name="email-form" data-name="Email Form" class="form">
-        <input type="email" class="text-field w-input" maxlength="256" autofocus="true" name="email" data-name="Email" placeholder="Enter your email" id="Email-2" required="">
-        <input type="password" class="text-field-2 w-input" maxlength="256" name="password" data-name="password" placeholder="Enter your password" id="password" required="">
-        <input type="submit" value="Sign In" data-wait="Please wait..." class="submit-button w-button">
-      </form>
+      <form method="post" action="/login" id="email-form" name="email-form" data-name="Email Form" class="form"><input type="email" class="text-field w-input" maxlength="256" autofocus="true" name="email" data-name="Email" placeholder="Enter your email" id="Email" required=""><input type="password" class="text-field w-input" maxlength="256" name="password" data-name="Password" placeholder="Enter your password" id="password" required=""><input type="submit" value="Sign In" data-wait="Please wait..." class="submit-button w-button"></form>
       <div class="w-form-done">
         <div>Success! You&#x27;ll be taken to your dashboard now. </div>
       </div>
-      <div class="w-form-fail">
+      <!-- <div class="w-form-fail">
         <div>Oops! Something went wrong signing in.</div>
-      </div>
+      </div> -->
+    </div>
+    <div>
+      <div class="text-block"><strong>The email or password you entered is incorrect. You can try again or </strong><a href="mailto:autopoweracing@gmail.com?subject=Login%20help"><strong>contact us</strong></a><strong>.</strong></div>
     </div>
   </div>
   <div class="footer">
     <div class="w-container">
       <div class="row w-row">
         <div class="spc w-col w-col-4">
-          <h5 class="heading">About APR</h5>
+          <h5 class="heading-2">About APR</h5>
           <p class="paragraph">APR is for students to show off their potential and talents for robotic engineering in a way more engaging environment. Which would you rather do: build a race car with your friends or just read about building one?</p>
         </div>
         <div class="spc w-col w-col-4">
           <h5 class="heading-2">Useful Links</h5><a href="https://docs.google.com/document/d/e/2PACX-1vSeHAfKN2CorScT4-Cx_Lz0kfkCqH_KF38bnUzcVZttrt2B4P9PlxVQChwBbKNW_sr44-7GxWLenTPs/pub" target="_blank" class="footer-link">Rules</a><a href="https://www.facebook.com/groups/aprace/" target="_blank" class="footer-link">Community</a></div>
         <div class="w-col w-col-4">
-          <h5 class="heading-3">Contact</h5>
+          <h5 class="heading-2">Contact</h5>
           <div class="footer-link-wrapper w-clearfix"><img src="https://uploads-ssl.webflow.com/5b8de80051c88fada2875e3b/5b8de80051c88f0693875e84_social-25-white.svg" width="20" class="info-icon"><a target="_blank" href="mailto:autopoweracing@gmail.com?subject=I&#x27;ve%20got%20a%20question" class="footer-link with-icon">Email Us</a></div>
         </div>
       </div>
     </div>
   </div>
-  <div>
-    <div class="footer center">
-      <div class="w-container">
-        <div class="footer-text">Copyright Autonomous Power Racing (APR) © 2018. </div>
-      </div>
+  <div class="footer center">
+    <div class="w-container">
+      <div class="footer-text">Copyright Autonomous Power Racing (APR) © 2018. </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

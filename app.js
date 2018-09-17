@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
+var passport = require('passport');
 var helmet = require('helmet');
   
 // routers to handle post and getting traffic
@@ -37,28 +38,46 @@ app.use(session({
   })
 }));
 
+// read/parse info coming in and out
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // view engine setup. don't need it now for current static pages
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
+// setting up passport configuration
+require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+// restrict private webpages with middleware
+function isLoggedIn(req, res, next){
+  if (req.isAuthenticated())
+    return next();
+
+  return res.redirect('/');
+}
+
+// more parsing libraries
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // loading static pages but should switch to a render model for the leaderboard
+// Public Webpages:
 app.use('/', express.static('routes/main_page'));
 app.use('/registration', express.static('routes/registration_page'));
-app.use('/payment', express.static('routes/stripe_page'));
-app.use('/welcome', express.static('routes/welcome_page'));
-app.use('/leaderboard', express.static('routes/apr_leaderboard'));
+app.use('/login', express.static('routes/login_page'));
+app.use('/login-error', express.static('routes/login_error_page'));
 app.use('/pricing', express.static('routes/pricing_page'));
-app.use('/signin', express.static('routes/login_page'));
-app.use('/bom', express.static('routes/bom_page'));
+
+// Private Webpages:
+app.use('/dashboard', isLoggedIn, express.static('routes/dashboard_page'));
+app.use('/bom', isLoggedIn, express.static('routes/bom_page'));
+app.use('/build', isLoggedIn, express.static('routes/build_car_page'));
 
 // routers
 app.use('/', indexRouter);
