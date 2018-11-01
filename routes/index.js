@@ -66,28 +66,12 @@ router.post('/charge', function(req, res, next) {
                 console.log(error);
                 return res.redirect('/registration');
             }
-            else {
-                    stripe.customers.create({
-                        email: req.body.stripeEmail,
-                        source: req.body.stripeToken
-                    })
-                    .then(customer =>
-                        stripe.charges.create({
-                            amount,
-                            description: "Auto-Power Racing Registration Charge",
-                            currency: "usd",
-                            customer: customer.id
-                        }))
-                    .then(function(charge) {
-                        if( charge.status == "succeeded" ) {
-                            req.logIn(user, function() {
-                                req.session.save(function() {
-                                    return res.redirect('/dashboard');
-                                })
-                            })
-                        }
-                    });
-                }
+            
+            req.logIn(user, function(){
+                req.session.save(function() {
+                    return res.redirect('/dashboard');
+                });
+            });
         });
     }
 });

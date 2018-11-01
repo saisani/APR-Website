@@ -1,107 +1,286 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Fri Sep 07 2018 04:16:10 GMT+0000 (UTC)  -->
-<html data-wf-page="5b8f900a5716750b58321b04" data-wf-site="5b8f900a57167570b1321b03">
+<!--  Last Published: Wed Oct 31 2018 19:45:22 GMT+0000 (UTC)  -->
+<html data-wf-page="5bd9e1653712dda19eddc3b3" data-wf-site="5bd9e1653712dd6e7eddc3ae">
 <head>
   <meta charset="utf-8">
-  <title>Registration</title>
+  <title>AP Racing</title>
+  <meta content="Collaborate" property="og:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
-  <link href="css/registration-e232b8.webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/new-registration.webflow.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" type="text/javascript"></script>
-  <script type="text/javascript">WebFont.load({  google: {    families: ["Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic"]  }});</script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic","Raleway:regular,500,600,700,800,900","Droid Sans Mono:regular","Playfair Display:regular,700,900","Karla:regular,700"]  }});</script>
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
   <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
-  <script src="https://js.stripe.com/v3/"></script>
   <link href="images/favicon-32x32.png" rel="shortcut icon" type="image/x-icon">
   <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
-  <link href="css/stripe-elements.css" rel="stylesheet" type="text/css">
+  <style>
+/* Text selection color */  
+::-moz-selection { 
+	background: black;
+    color: white;
+}
+::selection {
+	background: black;
+  	color: white;
+}
+/* Scrollbar fixings */ 
+body {
+  overflow-x: hidden;
+} 
+body::-webkit-scrollbar {
+    width: 8px;
+    height: 2px;
+    border-radius: 0px;
+  	background-color: #6c33da;
+}
+body::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    width: 8px;
+  	background-color: #422085;
+    height: 25px;
+} 
+body::-webkit-scrollbar-corner {
+	display: none;
+    height: 0px;
+    width: 0px;
+}
+</style>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.2/css/ion.rangeSlider.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.2/css/ion.rangeSlider.skinFlat.min.css">
+  <style>
+/* Overrides for range slider skin */
+.irs {
+    height: 40px;
+    margin-top: 15px;
+    margin-bottom: 30px
+}
+.irs-with-grid {
+    height: 85px
+}
+.irs-line {
+    height: 12px;
+    top: 35px
+}
+.irs-line-left {
+    height: 12px;
+    background-position: 0 -30px
+}
+.irs-line-mid {
+    height: 12px;
+    background-position: 0 0
+}
+.irs-line-right {
+    height: 12px;
+    background-position: 100% -30px
+}
+.irs-bar {
+    height: 12px;
+    top: 35px;
+    background-position: 0 -60px;
+    background-color: #6c33da;
+    background-image: none;!important
+}
+.irs-bar-edge {
+    top: 35px;
+    height: 12px;
+    width: 15px;
+    background-color: #6c33da;
+    background-image: none;!important
+    -webkit-border-top-left-radius: 4px;
+		-webkit-border-bottom-left-radius: 4px;
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px
+}
+.irs-shadow {
+    height: 3px;
+    top: 35px;
+    background: #000;
+    opacity: .25
+}
+.lt-ie9 .irs-shadow {
+    filter: alpha(opacity=25)
+}
+.irs-slider {
+    width: 25px;
+    height: 25px;
+    top: 29px;
+    background-position: 0 -120px;
+    background-image: none;
+    background-color: #ccc;
+    border-radius: 100%;
+    transition: background-color 200ms ease-in
+}
+.irs-slider.state_hover,
+.irs-slider:hover {
+    width: 25px;
+    height: 25px;
+    top: 29px;
+    background-position: 0 -120px;
+    background-image: none;
+    background-color: #6c33da;
+    border-radius: 100%
+}
+.irs-min,
+.irs-max {
+    color: #999;
+    font-size: 0.9em;
+    line-height: 1em;
+    text-shadow: none;
+    top: 0;
+    padding: 5px;
+    margin-bottom: 25px;
+    background: #e1e4e9;
+    -moz-border-radius: 4px;
+    border-radius: 4px
+}
+.irs-from,
+.irs-to,
+.irs-single {
+    color: #fff;
+    font-size: 0.9em;
+    line-height: 1em;
+    text-shadow: none;
+    padding: 5px;
+    margin-bottom: 25px;
+    background: #6c33da;
+    -moz-border-radius: 4px;
+    border-radius: 4px
+}
+.irs-from:after,
+.irs-to:after,
+.irs-single:after {
+    position: absolute;
+    display: block;
+    content: "";
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    margin-left: -3px;
+    overflow: hidden;
+    border: 3px solid transparent;
+    border-top-color: #6c33da
+}
+.irs-grid-pol {
+    background: #e1e4e9
+}
+.irs-grid-text {
+    color: #999
+}
+/* Getting rid of that ugly textarea resize-corner */
+textarea {
+resize: none
+}
+/* textarea scrollbar fixings */
+textarea.area.field.w-input::-webkit-scrollbar {
+    width: 14px;
+    height: 18px;
+}
+textarea.area.field.w-input::-webkit-scrollbar-thumb {
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+    background-color: #6c33da;
+    -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+}
+textarea.area.field.w-input::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+textarea.area.field.w-input::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+</style>
 </head>
 <body>
-  <div data-collapse="medium" data-animation="default" data-duration="400" class="navigation-bar w-nav">
-    <div class="w-container">
-      <a href="/" class="brand-link w-nav-brand">
-        <h1 class="brand-text">Autonomous Power Racing</h1>
-      </a>
-      <nav role="navigation" class="navigation-menu w-nav-menu">
-        <a href="/" class="navigation-link w-nav-link">Home</a>
-        <a href="/login" class="navigation-link w-nav-link">Login</a>
-      </nav>
-      <div class="hamburger-button w-nav-button">
-        <div class="w-icon-nav-menu"></div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-section centered">
-    <div data-ix="new-interaction" class="w-container">
-      <div class="w-clearfix">
-        <h1 data-ix="fade-in-bottom-page-loads" class="hero-heading">APR is just $65 per team and it&#x27;s easier to split the cost when you&#x27;re on team. <br>Don&#x27;t Get stuck being a spectator.</h1>
-      </div>
-    </div>
-    <div class="w-form">
-      <form method="post" action="/charge" id="email-form" name="email-form" data-name="Email Form" class="form">
-        <div>
-          <input type="text" class="text-field-2 w-input" maxlength="256" autofocus="true" name="flname" data-name="Name" placeholder="Enter your first and last name" id="Name" required="">
-        </div>
-        <div>
-          <input type="email" class="text-field-2 w-input" maxlength="256" name="email" data-name="Email" placeholder="Enter your email" id="Email" required="">
-        </div>
-        <div>
-          <input type="password" class="text-field-2 w-input" maxlength="256" name="password" data-name="Password" placeholder="Enter your password" id="Password-3" required="">
-        </div>
-        <div>
-          <input type="password" class="text-field-2 w-input" maxlength="256" name="password_conf" data-name="Password-Conf" placeholder="Re-enter your password" id="Password-2" required="">
-        </div>
-        <div class="div-block"></div>
-        <div>
-          <input type="text" class="text-field-4 w-input" maxlength="256" name="teamname" data-name="Team Name" placeholder="What&#x27;s your team name?" id="Team-Name" required="">
-        </div>
-        <div>
-          <input type="text" class="text-field-5 w-input" maxlength="256" name="schoolname" data-name="High School" placeholder="Enter your school" id="High-School" required="">
-        </div>
-        <div class="div-block-2"></div>
-        <div>
-          <div id="card-element" class="form-control"></div>
-          <div id="card-errors" role="alert"></div>
-        </div>
-        <input type="submit" value="Sign Up" data-wait="Please wait..." class="submit-button-3 w-button">
-      </form>
-      <div class="w-form-done">
-        <div>Your registration is successful! You&#x27;ll be taken to your dashboard. </div>
-      </div>
-      <div class="w-form-fail">
-        <div>Oops! Something went wrong with your registration. Please try again or contact us. </div>
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <div class="w-container">
-      <div class="row w-row">
-        <div class="spc w-col w-col-4">
-          <h5 class="heading-2">About APR</h5>
-          <p class="paragraph">APR is for students to show off their potential and talents for robotic engineering in a way more engaging environment. Which would you rather do: build a race car with your friends or just read about building one?</p>
-        </div>
-        <div class="spc w-col w-col-4">
-          <h5 class="heading-2">Useful Links</h5><a href="https://docs.google.com/document/d/e/2PACX-1vSeHAfKN2CorScT4-Cx_Lz0kfkCqH_KF38bnUzcVZttrt2B4P9PlxVQChwBbKNW_sr44-7GxWLenTPs/pub" target="_blank" class="footer-link">Rules</a><a href="https://www.facebook.com/groups/aprace/" target="_blank" class="footer-link">Community</a></div>
-        <div class="w-col w-col-4">
-          <h5 class="heading-2">Contact</h5>
-          <div class="footer-link-wrapper w-clearfix"><img src="https://uploads-ssl.webflow.com/5b8de80051c88fada2875e3b/5b8de80051c88f0693875e84_social-25-white.svg" width="20" class="info-icon"><a target="_blank" href="mailto:autopoweracing@gmail.com?subject=I&#x27;ve%20got%20a%20question" class="footer-link with-icon">Email Us</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div class="footer center">
+  <div class="collaborate-wrap">
+    <div class="hero-collaborate">
       <div class="w-container">
-        <div class="footer-text">Copyright Autonomous Power Racing (APR) © 2018. </div>
+        <h1 class="heading">Welcome to APR!<br></h1>
+        <div class="sub-heading">Let&#x27;s get started. </div>
       </div>
+    </div>
+    <div class="w-container">
+      <div class="form-wrapper w-form">
+        <form method="post" action="/charge" id="email-form" name="email-form" data-name="Email Form">
+          <div data-animation="cross" data-duration="200" data-disable-swipe="1" data-hide-arrows="1" class="step-paginator w-slider">
+            <div class="mask w-slider-mask">
+              <div class="step w-slide">
+                <div class="collaborate-form-step">
+                  <div class="form-content">
+                    <div data-ix="show-content-onslide" class="form-section-title">Please fill in your details</div>
+                    <div data-ix="show-content-onslide" class="form-title-line"></div>
+                      <input type="text" class="field w-input" maxlength="256" name="flname" data-name="Name" data-ix="show-content-onslide" placeholder="Enter your First and Last name" id="Name" required="">
+                      <input type="email" class="field w-input" maxlength="256" name="email" data-name="Email" data-ix="show-content-onslide" placeholder="Enter your email address" id="Email" required="">
+                    </div>
+                  <div data-ix="show-content-onslide" class="step-counter">1/3</div>
+                </div>
+              </div>
+              <div class="step w-slide">
+                <div class="collaborate-form-step">
+                  <div data-ix="show-content-onslide" class="step-counter">2/3</div>
+                  <div class="form-content">
+                    <div data-ix="show-content-onslide" class="form-section-title">Team Info</div>
+                    <div data-ix="show-content-onslide" class="form-title-line"></div>
+                      <input type="text" class="field w-input" maxlength="256" name="teamname" data-name="Team Name" data-ix="show-content-onslide" placeholder="What&#x27;s your team name?" id="Team-Name" required="">
+                      <input type="text" class="field w-input" maxlength="256" name="schoolname" data-name="School Name" data-ix="show-content-onslide" placeholder="What&#x27;s the name of your school?" id="School-Name" required="">
+                    </div>
+                </div>
+              </div>
+              <div class="step w-slide">
+                <div class="collaborate-form-step">
+                  <div class="form-content final">
+                    <div data-ix="show-content-onslide" class="form-section-title">Last Step</div>
+                    <div data-ix="show-content-onslide" class="form-title-line"></div>
+                      <input type="password" class="field w-node-1a89cbf7c16d-9eddc3b3 w-input" maxlength="256" name="password" data-name="Password" data-ix="show-content-onslide" placeholder="Create a Password" id="Password" required="">
+                      <input type="password" class="field w-input" maxlength="256" name="password_conf" data-name="School Location" data-ix="show-content-onslide" placeholder="Confirm your Password" id="School-Location" required="">
+                      <input type="submit" value="Submit" data-wait="Calculating Nash Equilibrium..." wait="Calculating Nash Equilibrium..." data-ix="show-content-onslide" class="submit-button w-button">
+                    </div>
+                  <div data-ix="show-content-onslide" class="step-counter">3/3</div>
+                </div>
+              </div>
+            </div>
+            <div class="previous w-slider-arrow-left">
+              <div class="previous-button">← Back</div>
+            </div>
+            <div class="next w-slider-arrow-right">
+              <div class="next-button">Next</div>
+            </div>
+          </div>
+        </form>
+        <div class="success-message w-form-done">
+          <div>Thanks for signing up! You'll be redirected to your dashboard.</div>
+        </div>
+        <div class="error-message w-form-fail">
+          <div>Oops! Something went wrong while submitting the form. Make sure You entered in the right information.</div>
+        </div>
+      </div>
+    </div>
+    <div class="social">
+      <a href="/">
+        <img src="https://uploads-ssl.webflow.com/5bd1433b9c511a317d475b7f/5bd1433b9c511a7a1e475b9c_home-icon.svg" alt="">
+      </a>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
-  <script src="js/card.js" type="text/javascript"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+  <script>
+  $('#quicksearch').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.2/js/ion.rangeSlider.min.js"></script>
+  
 </body>
 </html>

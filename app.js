@@ -76,8 +76,8 @@ app.use('/pricing', express.static('routes/pricing_page'));
 
 // Private Webpages:
 app.use('/dashboard', isLoggedIn, express.static('routes/dashboard_page'));
-app.use('/bom', isLoggedIn, express.static('routes/bom_page'));
-app.use('/build', isLoggedIn, express.static('routes/build_car_page'));
+app.use('/bom', express.static('routes/bom_page'));
+app.use('/build', express.static('routes/build_car_page'));
 
 // routers
 app.use('/', indexRouter);
