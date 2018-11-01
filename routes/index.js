@@ -30,10 +30,12 @@ router.get('/logout', function(req, res, next) {
 /* Login Page */
 router.post('/login', passport.authenticate('local-login', {
     successRedirect: '/dashboard',
-    failureRedirect: '/login-error',
+    failureRedirect: '/login',
 }));
 
 /* Processing Stripe Payment and SignIn Registration */
+/* For new registration page, we are not using the stripe integration 
+just yet */
 router.post('/charge', function(req, res, next) {
 
     // registration fee
