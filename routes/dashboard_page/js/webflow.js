@@ -67,7 +67,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,8 +86,8 @@ var $ = window.jQuery;
 var $win = $(window);
 var $doc = $(document);
 var isFunction = $.isFunction;
-var _ = Webflow._ = __webpack_require__(4);
-var tram = __webpack_require__(1) && $.tram;
+var _ = Webflow._ = __webpack_require__(6);
+var tram = Webflow.tram = __webpack_require__(2) && $.tram;
 var domready = false;
 var destroyed = false;
 tram.config.hideBackface = false;
@@ -390,6 +390,54 @@ module.exports = window.Webflow = Webflow;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var IXEvents = __webpack_require__(3);
+
+function dispatchCustomEvent(element, eventName) {
+  var event = document.createEvent('CustomEvent');
+  event.initCustomEvent(eventName, true, true, null);
+  element.dispatchEvent(event);
+}
+
+/**
+ * Webflow: IX Event triggers for other modules
+ */
+
+var $ = window.jQuery;
+var api = {};
+var namespace = '.w-ix';
+
+var eventTriggers = {
+  reset: function reset(i, el) {
+    IXEvents.triggers.reset(i, el);
+  },
+  intro: function intro(i, el) {
+    IXEvents.triggers.intro(i, el);
+    dispatchCustomEvent(el, 'COMPONENT_ACTIVE');
+  },
+  outro: function outro(i, el) {
+    IXEvents.triggers.outro(i, el);
+    dispatchCustomEvent(el, 'COMPONENT_INACTIVE');
+  }
+};
+
+api.triggers = {};
+
+api.types = {
+  INTRO: 'w-ix-intro' + namespace,
+  OUTRO: 'w-ix-outro' + namespace
+};
+
+$.extend(api.triggers, eventTriggers);
+
+module.exports = api;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -818,19 +866,97 @@ window.tram = function (a) {
 }(window.jQuery);
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(3);
+"use strict";
+
+
+/**
+ * Webflow: IX Event triggers for other modules
+ */
+
+var $ = window.jQuery;
+var api = {};
+var eventQueue = [];
+var namespace = '.w-ix';
+
+var eventTriggers = {
+  reset: function reset(i, el) {
+    el.__wf_intro = null;
+  },
+  intro: function intro(i, el) {
+    if (el.__wf_intro) {
+      return;
+    }
+    el.__wf_intro = true;
+    $(el).triggerHandler(api.types.INTRO);
+  },
+  outro: function outro(i, el) {
+    if (!el.__wf_intro) {
+      return;
+    }
+    el.__wf_intro = null;
+    $(el).triggerHandler(api.types.OUTRO);
+  }
+};
+
+api.triggers = {};
+
+api.types = {
+  INTRO: 'w-ix-intro' + namespace,
+  OUTRO: 'w-ix-outro' + namespace
+};
+
+// Trigger any events in queue + restore trigger methods
+api.init = function () {
+  var count = eventQueue.length;
+  for (var i = 0; i < count; i++) {
+    var memo = eventQueue[i];
+    memo[0](0, memo[1]);
+  }
+  eventQueue = [];
+  $.extend(api.triggers, eventTriggers);
+};
+
+// Replace all triggers with async wrapper to queue events until init
+api.async = function () {
+  for (var key in eventTriggers) {
+    var func = eventTriggers[key];
+    if (!eventTriggers.hasOwnProperty(key)) {
+      continue;
+    }
+
+    // Replace trigger method with async wrapper
+    api.triggers[key] = function (i, el) {
+      eventQueue.push([func, el]);
+    };
+  }
+};
+
+// Default triggers to async queue
+api.async();
+
+module.exports = api;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
 __webpack_require__(5);
 __webpack_require__(7);
-__webpack_require__(8);
+__webpack_require__(9);
+__webpack_require__(10);
 __webpack_require__(11);
-module.exports = __webpack_require__(12);
+__webpack_require__(12);
+__webpack_require__(13);
+__webpack_require__(14);
+__webpack_require__(15);
+module.exports = __webpack_require__(16);
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -914,12 +1040,12 @@ Webflow.define('brand', module.exports = function ($) {
 });
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Include tram for frame-throttling
 var $ = window.$;
-var tram = __webpack_require__(1) && $.tram;
+var tram = __webpack_require__(2) && $.tram;
 
 /*eslint-disable */
 
@@ -1272,7 +1398,7 @@ module.exports = function () {
 /* eslint-enable */
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1285,7 +1411,7 @@ Webflow.define('forms', module.exports = function ($, _) {
   var api = {};
 
   // Cross-Domain AJAX for IE8
-  __webpack_require__(6);
+  __webpack_require__(8);
 
   var $doc = $(document);
   var $forms;
@@ -1763,7 +1889,7 @@ Webflow.define('forms', module.exports = function ($, _) {
 });
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /*!
@@ -1822,7 +1948,1136 @@ module.exports = function ($) {
 }(window.jQuery);
 
 /***/ }),
-/* 7 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Webflow: Interactions
+ */
+
+var Webflow = __webpack_require__(0);
+var IXEvents = __webpack_require__(3);
+
+Webflow.define('ix', module.exports = function ($, _) {
+  var api = {};
+  var designer;
+  var $win = $(window);
+  var namespace = '.w-ix';
+  var tram = $.tram;
+  var env = Webflow.env;
+  var inApp = env();
+  var emptyFix = env.chrome && env.chrome < 35;
+  var transNone = 'none 0s ease 0s';
+  var $subs = $();
+  var config = {};
+  var anchors = [];
+  var loads = [];
+  var readys = [];
+  var destroyed;
+  var readyDelay = 1;
+
+  // Component types and proxy selectors
+  var components = {
+    tabs: '.w-tab-link, .w-tab-pane',
+    dropdown: '.w-dropdown',
+    slider: '.w-slide',
+    navbar: '.w-nav'
+  };
+
+  // -----------------------------------
+  // Module methods
+
+  api.init = function (list) {
+    setTimeout(function () {
+      configure(list);
+    }, 1);
+  };
+
+  api.preview = function () {
+    designer = false;
+    readyDelay = 100;
+    setTimeout(function () {
+      configure(window.__wf_ix);
+    }, 1);
+  };
+
+  api.design = function () {
+    designer = true;
+    api.destroy();
+  };
+
+  api.destroy = function () {
+    destroyed = true;
+    $subs.each(teardown);
+    Webflow.scroll.off(scroll);
+    IXEvents.async();
+    anchors = [];
+    loads = [];
+    readys = [];
+  };
+
+  api.ready = function () {
+    // Redirect IX init while in design/preview modes
+    if (inApp) {
+      return env('design') ? api.design() : api.preview();
+    }
+
+    // Ready should only be used after destroy, as a way to re-init
+    if (config && destroyed) {
+      destroyed = false;
+      init();
+    }
+  };
+
+  api.run = run;
+  api.style = inApp ? styleApp : stylePub;
+
+  // -----------------------------------
+  // Private methods
+
+  function configure(list) {
+    if (!list) {
+      return;
+    }
+
+    // Map all interactions by slug
+    config = {};
+    _.each(list, function (item) {
+      config[item.slug] = item.value;
+    });
+
+    // Init ix after config
+    init();
+  }
+
+  function init() {
+
+    initIX1Engine();
+
+    // Need init IXEvents regardless if IX1 events exist since
+    // IXEvents _also_ dispatch IX2 events.
+
+    // Trigger queued events, must happen after init
+    IXEvents.init();
+
+    // Trigger a redraw to ensure all IX intros play
+    Webflow.redraw.up();
+  }
+
+  function initIX1Engine() {
+    // Build each element's interaction keying from data attribute
+    var els = $('[data-ix]');
+    if (!els.length) {
+      return;
+    }
+
+    els.each(teardown);
+    els.each(build);
+
+    // Listen for scroll events if any anchors exist
+    if (anchors.length) {
+      Webflow.scroll.on(scroll);
+      setTimeout(scroll, 1);
+    }
+
+    // Handle loads or readys if they exist
+    if (loads.length) {
+      Webflow.load(runLoads);
+    }
+    if (readys.length) {
+      setTimeout(runReadys, readyDelay);
+    }
+  }
+
+  function build(i, el) {
+    var $el = $(el);
+    var id = $el.attr('data-ix');
+    var ix = config[id];
+    if (!ix) {
+      return;
+    }
+    var triggers = ix.triggers;
+    if (!triggers) {
+      return;
+    }
+
+    // Set styles immediately to provide tram with starting transform values
+    api.style($el, ix.style);
+
+    _.each(triggers, function (trigger) {
+      var state = {};
+      var type = trigger.type;
+      var stepsB = trigger.stepsB && trigger.stepsB.length;
+
+      function runA() {
+        run(trigger, $el, { group: 'A' });
+      }
+      function runB() {
+        run(trigger, $el, { group: 'B' });
+      }
+
+      if (type === 'load') {
+        trigger.preload && !inApp ? loads.push(runA) : readys.push(runA);
+        return;
+      }
+
+      if (type === 'click') {
+        $el.on('click' + namespace, function (evt) {
+          // Avoid late clicks on touch devices
+          if (!Webflow.validClick(evt.currentTarget)) {
+            return;
+          }
+
+          // Prevent default on empty hash urls
+          if ($el.attr('href') === '#') {
+            evt.preventDefault();
+          }
+
+          run(trigger, $el, { group: state.clicked ? 'B' : 'A' });
+          if (stepsB) {
+            state.clicked = !state.clicked;
+          }
+        });
+        $subs = $subs.add($el);
+        return;
+      }
+
+      if (type === 'hover') {
+        $el.on('mouseenter' + namespace, runA);
+        $el.on('mouseleave' + namespace, runB);
+        $subs = $subs.add($el);
+        return;
+      }
+
+      if (type === 'scroll') {
+        anchors.push({
+          el: $el, trigger: trigger, state: { active: false },
+          offsetTop: convert(trigger.offsetTop),
+          offsetBot: convert(trigger.offsetBot)
+        });
+        return;
+      }
+
+      // Check for a proxy component selector
+      // type == [tabs, dropdown, slider, navbar]
+      var proxy = components[type];
+      if (proxy) {
+        var $proxy = $el.closest(proxy);
+        $proxy.on(IXEvents.types.INTRO, runA).on(IXEvents.types.OUTRO, runB);
+        $subs = $subs.add($proxy);
+        return;
+      }
+    });
+  }
+
+  function convert(offset) {
+    if (!offset) {
+      return 0;
+    }
+    offset = String(offset);
+    var result = parseInt(offset, 10);
+    if (result !== result) {
+      return 0;
+    }
+    if (offset.indexOf('%') > 0) {
+      result /= 100;
+      if (result >= 1) {
+        result = 0.999;
+      }
+    }
+    return result;
+  }
+
+  function teardown(i, el) {
+    $(el).off(namespace);
+  }
+
+  function scroll() {
+    var viewTop = $win.scrollTop();
+    var viewHeight = $win.height();
+
+    // Check each anchor for a valid scroll trigger
+    var count = anchors.length;
+    for (var i = 0; i < count; i++) {
+      var anchor = anchors[i];
+      var $el = anchor.el;
+      var trigger = anchor.trigger;
+      var stepsB = trigger.stepsB && trigger.stepsB.length;
+      var state = anchor.state;
+      var top = $el.offset().top;
+      var height = $el.outerHeight();
+      var offsetTop = anchor.offsetTop;
+      var offsetBot = anchor.offsetBot;
+      if (offsetTop < 1 && offsetTop > 0) {
+        offsetTop *= viewHeight;
+      }
+      if (offsetBot < 1 && offsetBot > 0) {
+        offsetBot *= viewHeight;
+      }
+      var active = top + height - offsetTop >= viewTop && top + offsetBot <= viewTop + viewHeight;
+      if (active === state.active) {
+        continue;
+      }
+      if (active === false && !stepsB) {
+        continue;
+      }
+      state.active = active;
+      run(trigger, $el, { group: active ? 'A' : 'B' });
+    }
+  }
+
+  function runLoads() {
+    var count = loads.length;
+    for (var i = 0; i < count; i++) {
+      loads[i]();
+    }
+  }
+
+  function runReadys() {
+    var count = readys.length;
+    for (var i = 0; i < count; i++) {
+      readys[i]();
+    }
+  }
+
+  function run(trigger, $el, opts, replay) {
+    opts = opts || {};
+    var done = opts.done;
+    var preserve3d = trigger.preserve3d;
+
+    // Do not run in designer unless forced
+    if (designer && !opts.force) {
+      return;
+    }
+
+    // Operate on a set of grouped steps
+    var group = opts.group || 'A';
+    var loop = trigger['loop' + group];
+    var steps = trigger['steps' + group];
+    if (!steps || !steps.length) {
+      return;
+    }
+    if (steps.length < 2) {
+      loop = false;
+    }
+
+    // One-time init before any loops
+    if (!replay) {
+
+      // Find selector within element descendants, siblings, or query whole document
+      var selector = trigger.selector;
+      if (selector) {
+        if (trigger.descend) {
+          $el = $el.find(selector);
+        } else if (trigger.siblings) {
+          $el = $el.siblings(selector);
+        } else {
+          $el = $(selector);
+        }
+        if (inApp) {
+          $el.attr('data-ix-affect', 1);
+        }
+      }
+
+      // Apply empty fix for certain Chrome versions
+      if (emptyFix) {
+        $el.addClass('w-ix-emptyfix');
+      }
+
+      // Set preserve3d for triggers with 3d transforms
+      if (preserve3d) {
+        $el.css('transform-style', 'preserve-3d');
+      }
+    }
+
+    var _tram = tram($el);
+
+    // Add steps
+    var meta = { omit3d: !preserve3d };
+    for (var i = 0; i < steps.length; i++) {
+      addStep(_tram, steps[i], meta);
+    }
+
+    function fin() {
+      // Run trigger again if looped
+      if (loop) {
+        return run(trigger, $el, opts, true);
+      }
+
+      // Reset any 'auto' values
+      if (meta.width === 'auto') {
+        _tram.set({ width: 'auto' });
+      }
+      if (meta.height === 'auto') {
+        _tram.set({ height: 'auto' });
+      }
+
+      // Run callback
+      done && done();
+    }
+
+    // Add final step to queue if tram has started
+    meta.start ? _tram.then(fin) : fin();
+  }
+
+  function addStep(_tram, step, meta) {
+    var addMethod = 'add';
+    var startMethod = 'start';
+
+    // Once the transition has started, we will always use then() to add to the queue.
+    if (meta.start) {
+      addMethod = startMethod = 'then';
+    }
+
+    // Parse transitions string on the current step
+    var transitions = step.transition;
+    if (transitions) {
+      transitions = transitions.split(',');
+      for (var i = 0; i < transitions.length; i++) {
+        var transition = transitions[i];
+        _tram[addMethod](transition);
+      }
+    }
+
+    // Build a clean object to pass to the tram method
+    var clean = tramify(step, meta) || {};
+
+    // Store last width and height values
+    if (clean.width != null) {
+      meta.width = clean.width;
+    }
+    if (clean.height != null) {
+      meta.height = clean.height;
+    }
+
+    // When transitions are not present, set values immediately and continue queue.
+    if (transitions == null) {
+
+      // If we have started, wrap set() in then() and reset queue
+      if (meta.start) {
+        _tram.then(function () {
+          var queue = this.queue;
+          this.set(clean);
+          if (clean.display) {
+            _tram.redraw();
+            Webflow.redraw.up();
+          }
+          this.queue = queue;
+          this.next();
+        });
+      } else {
+        _tram.set(clean);
+
+        // Always redraw after setting display
+        if (clean.display) {
+          _tram.redraw();
+          Webflow.redraw.up();
+        }
+      }
+
+      // Use the wait() method to kick off queue in absence of transitions.
+      var wait = clean.wait;
+      if (wait != null) {
+        _tram.wait(wait);
+        meta.start = true;
+      }
+
+      // Otherwise, when transitions are present
+    } else {
+
+      // If display is present, handle it separately
+      if (clean.display) {
+        var display = clean.display;
+        delete clean.display;
+
+        // If we've already started, we need to wrap it in a then()
+        if (meta.start) {
+          _tram.then(function () {
+            var queue = this.queue;
+            this.set({ display: display }).redraw();
+            Webflow.redraw.up();
+            this.queue = queue;
+            this.next();
+          });
+        } else {
+          _tram.set({ display: display }).redraw();
+          Webflow.redraw.up();
+        }
+      }
+
+      // Otherwise, start a transition using the current start method.
+      _tram[startMethod](clean);
+      meta.start = true;
+    }
+  }
+
+  // (In app) Set styles immediately and manage upstream transition
+  function styleApp(el, data) {
+    var _tram = tram(el);
+
+    // Exit early when data is empty to avoid clearing upstream
+    if ($.isEmptyObject(data)) {
+      return;
+    }
+
+    // Get computed transition value
+    el.css('transition', '');
+    var computed = el.css('transition');
+
+    // If computed is set to none, clear upstream
+    if (computed === transNone) {
+      computed = _tram.upstream = null;
+    }
+
+    // Set upstream transition to none temporarily
+    _tram.upstream = transNone;
+
+    // Set values immediately
+    _tram.set(tramify(data));
+
+    // Only restore upstream in preview mode
+    _tram.upstream = computed;
+  }
+
+  // (Published) Set styles immediately on specified jquery element
+  function stylePub(el, data) {
+    tram(el).set(tramify(data));
+  }
+
+  // Build a clean object for tram
+  function tramify(obj, meta) {
+    var omit3d = meta && meta.omit3d;
+    var result = {};
+    var found = false;
+    for (var key in obj) {
+      if (key === 'transition') {
+        continue;
+      }
+      if (key === 'keysort') {
+        continue;
+      }
+      if (omit3d) {
+        if (key === 'z' || key === 'rotateX' || key === 'rotateY' || key === 'scaleZ') {
+          continue;
+        }
+      }
+      result[key] = obj[key];
+      found = true;
+    }
+    // If empty, return null for tram.set/stop compliance
+    return found ? result : null;
+  }
+
+  // Export module
+  return api;
+});
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*eslint no-shadow: 0*/
+
+/**
+ * Webflow: Lightbox component
+ */
+
+var Webflow = __webpack_require__(0);
+
+function createLightbox(window, document, $, container) {
+  var tram = $.tram;
+  var isArray = Array.isArray;
+  var namespace = 'w-lightbox';
+  var prefix = namespace + '-';
+  var prefixRegex = /(^|\s+)/g;
+
+  // Array of objects describing items to be displayed.
+  var items = [];
+
+  // Index of the currently displayed item.
+  var currentIndex;
+
+  // Object holding references to jQuery wrapped nodes.
+  var $refs;
+
+  // Instance of Spinner
+  var spinner;
+
+  function lightbox(thing, index) {
+    items = isArray(thing) ? thing : [thing];
+
+    if (!$refs) {
+      lightbox.build();
+    }
+
+    if (items.length > 1) {
+      $refs.items = $refs.empty;
+
+      items.forEach(function (item) {
+        var $thumbnail = dom('thumbnail');
+        var $item = dom('item').append($thumbnail);
+
+        $refs.items = $refs.items.add($item);
+
+        loadImage(item.thumbnailUrl || item.url, function ($image) {
+          if ($image.prop('width') > $image.prop('height')) {
+            addClass($image, 'wide');
+          } else {
+            addClass($image, 'tall');
+          }
+          $thumbnail.append(addClass($image, 'thumbnail-image'));
+        });
+      });
+
+      $refs.strip.empty().append($refs.items);
+      addClass($refs.content, 'group');
+    }
+
+    tram(
+    // Focus the lightbox to receive keyboard events.
+    removeClass($refs.lightbox, 'hide').trigger('focus')).add('opacity .3s').start({ opacity: 1 });
+
+    // Prevent document from scrolling while lightbox is active.
+    addClass($refs.html, 'noscroll');
+
+    return lightbox.show(index || 0);
+  }
+
+  /**
+   * Creates the DOM structure required by the lightbox.
+   */
+  lightbox.build = function () {
+    // In case `build` is called more than once.
+    lightbox.destroy();
+
+    $refs = {
+      html: $(document.documentElement),
+      // Empty jQuery object can be used to build new ones using `.add`.
+      empty: $()
+    };
+
+    $refs.arrowLeft = dom('control left inactive');
+    $refs.arrowRight = dom('control right inactive');
+    $refs.close = dom('control close');
+
+    $refs.spinner = dom('spinner');
+    $refs.strip = dom('strip');
+
+    spinner = new Spinner($refs.spinner, prefixed('hide'));
+
+    $refs.content = dom('content').append($refs.spinner, $refs.arrowLeft, $refs.arrowRight, $refs.close);
+
+    $refs.container = dom('container').append($refs.content, $refs.strip);
+
+    $refs.lightbox = dom('backdrop hide').append($refs.container);
+
+    // We are delegating events for performance reasons and also
+    // to not have to reattach handlers when images change.
+    $refs.strip.on('tap', selector('item'), itemTapHandler);
+    $refs.content.on('swipe', swipeHandler).on('tap', selector('left'), handlerPrev).on('tap', selector('right'), handlerNext).on('tap', selector('close'), handlerHide).on('tap', selector('image, caption'), handlerNext);
+    $refs.container.on('tap', selector('view'), handlerHide)
+    // Prevent images from being dragged around.
+    .on('dragstart', selector('img'), preventDefault);
+    $refs.lightbox.on('keydown', keyHandler)
+    // IE loses focus to inner nodes without letting us know.
+    .on('focusin', focusThis);
+
+    // The `tabindex` attribute is needed to enable non-input elements
+    // to receive keyboard events.
+    $(container).append($refs.lightbox.prop('tabIndex', 0));
+
+    return lightbox;
+  };
+
+  /**
+   * Dispose of DOM nodes created by the lightbox.
+   */
+  lightbox.destroy = function () {
+    if (!$refs) {
+      return;
+    }
+
+    // Event handlers are also removed.
+    removeClass($refs.html, 'noscroll');
+    $refs.lightbox.remove();
+    $refs = undefined;
+  };
+
+  /**
+   * Show a specific item.
+   */
+  lightbox.show = function (index) {
+    // Bail if we are already showing this item.
+    if (index === currentIndex) {
+      return;
+    }
+
+    var item = items[index];
+    if (!item) {
+      return lightbox.hide();
+    }
+
+    var previousIndex = currentIndex;
+    currentIndex = index;
+    spinner.show();
+
+    // For videos, load an empty SVG with the video dimensions to preserve
+    // the video’s aspect ratio while being responsive.
+    var url = item.html && svgDataUri(item.width, item.height) || item.url;
+    loadImage(url, function ($image) {
+      // Make sure this is the last item requested to be shown since
+      // images can finish loading in a different order than they were
+      // requested in.
+      if (index !== currentIndex) {
+        return;
+      }
+
+      var $figure = dom('figure', 'figure').append(addClass($image, 'image'));
+      var $frame = dom('frame').append($figure);
+      var $newView = dom('view').append($frame);
+      var $html;
+      var isIframe;
+
+      if (item.html) {
+        $html = $(item.html);
+        isIframe = $html.is('iframe');
+
+        if (isIframe) {
+          $html.on('load', transitionToNewView);
+        }
+
+        $figure.append(addClass($html, 'embed'));
+      }
+
+      if (item.caption) {
+        $figure.append(dom('caption', 'figcaption').text(item.caption));
+      }
+
+      $refs.spinner.before($newView);
+
+      if (!isIframe) {
+        transitionToNewView();
+      }
+
+      function transitionToNewView() {
+        spinner.hide();
+
+        if (index !== currentIndex) {
+          $newView.remove();
+          return;
+        }
+
+        toggleClass($refs.arrowLeft, 'inactive', index <= 0);
+        toggleClass($refs.arrowRight, 'inactive', index >= items.length - 1);
+
+        if ($refs.view) {
+          tram($refs.view).add('opacity .3s').start({ opacity: 0 }).then(remover($refs.view));
+
+          tram($newView).add('opacity .3s').add('transform .3s').set({ x: index > previousIndex ? '80px' : '-80px' }).start({ opacity: 1, x: 0 });
+        } else {
+          $newView.css('opacity', 1);
+        }
+
+        $refs.view = $newView;
+
+        if ($refs.items) {
+          removeClass($refs.items, 'active');
+          // Mark proper thumbnail as active
+          var $activeThumb = $refs.items.eq(index);
+          addClass($activeThumb, 'active');
+          // Scroll into view
+          maybeScroll($activeThumb);
+        }
+      }
+    });
+
+    return lightbox;
+  };
+
+  /**
+   * Hides the lightbox.
+   */
+  lightbox.hide = function () {
+    tram($refs.lightbox).add('opacity .3s').start({ opacity: 0 }).then(hideLightbox);
+
+    return lightbox;
+  };
+
+  lightbox.prev = function () {
+    if (currentIndex > 0) {
+      lightbox.show(currentIndex - 1);
+    }
+  };
+
+  lightbox.next = function () {
+    if (currentIndex < items.length - 1) {
+      lightbox.show(currentIndex + 1);
+    }
+  };
+
+  function createHandler(action) {
+    return function (event) {
+      // We only care about events triggered directly on the bound selectors.
+      if (this !== event.target) {
+        return;
+      }
+
+      event.stopPropagation();
+      event.preventDefault();
+
+      action();
+    };
+  }
+
+  var handlerPrev = createHandler(lightbox.prev);
+  var handlerNext = createHandler(lightbox.next);
+  var handlerHide = createHandler(lightbox.hide);
+
+  var itemTapHandler = function itemTapHandler(event) {
+    var index = $(this).index();
+
+    event.preventDefault();
+    lightbox.show(index);
+  };
+
+  var swipeHandler = function swipeHandler(event, data) {
+    // Prevent scrolling.
+    event.preventDefault();
+
+    if (data.direction === 'left') {
+      lightbox.next();
+    } else if (data.direction === 'right') {
+      lightbox.prev();
+    }
+  };
+
+  var focusThis = function focusThis() {
+    this.focus();
+  };
+
+  function preventDefault(event) {
+    event.preventDefault();
+  }
+
+  function keyHandler(event) {
+    var keyCode = event.keyCode;
+
+    // [esc]
+    if (keyCode === 27) {
+      lightbox.hide();
+
+      // [◀]
+    } else if (keyCode === 37) {
+      lightbox.prev();
+
+      // [▶]
+    } else if (keyCode === 39) {
+      lightbox.next();
+    }
+  }
+
+  function hideLightbox() {
+    // If the lightbox hasn't been destroyed already
+    if ($refs) {
+      // Reset strip scroll, otherwise next lightbox opens scrolled to last position
+      $refs.strip.scrollLeft(0).empty();
+      removeClass($refs.html, 'noscroll');
+      addClass($refs.lightbox, 'hide');
+      $refs.view && $refs.view.remove();
+
+      // Reset some stuff
+      removeClass($refs.content, 'group');
+      addClass($refs.arrowLeft, 'inactive');
+      addClass($refs.arrowRight, 'inactive');
+
+      currentIndex = $refs.view = undefined;
+    }
+  }
+
+  function loadImage(url, callback) {
+    var $image = dom('img', 'img');
+
+    $image.one('load', function () {
+      callback($image);
+    });
+
+    // Start loading image.
+    $image.attr('src', url);
+
+    return $image;
+  }
+
+  function remover($element) {
+    return function () {
+      $element.remove();
+    };
+  }
+
+  function maybeScroll($item) {
+    var itemLeft = $item.position().left;
+    var stripScrollLeft = $refs.strip.scrollLeft();
+    var stripWidth = $refs.strip.width();
+    if (itemLeft < stripScrollLeft || itemLeft > stripWidth + stripScrollLeft) {
+      tram($refs.strip).add('scroll-left 500ms').start({ 'scroll-left': itemLeft });
+    }
+  }
+
+  /**
+   * Spinner
+   */
+  function Spinner($spinner, className, delay) {
+    this.$element = $spinner;
+    this.className = className;
+    this.delay = delay || 200;
+    this.hide();
+  }
+
+  Spinner.prototype.show = function () {
+    var spinner = this;
+
+    // Bail if we are already showing the spinner.
+    if (spinner.timeoutId) {
+      return;
+    }
+
+    spinner.timeoutId = setTimeout(function () {
+      spinner.$element.removeClass(spinner.className);
+      delete spinner.timeoutId;
+    }, spinner.delay);
+  };
+
+  Spinner.prototype.hide = function () {
+    var spinner = this;
+    if (spinner.timeoutId) {
+      clearTimeout(spinner.timeoutId);
+      delete spinner.timeoutId;
+      return;
+    }
+
+    spinner.$element.addClass(spinner.className);
+  };
+
+  function prefixed(string, isSelector) {
+    return string.replace(prefixRegex, (isSelector ? ' .' : ' ') + prefix);
+  }
+
+  function selector(string) {
+    return prefixed(string, true);
+  }
+
+  /**
+   * jQuery.addClass with auto-prefixing
+   * @param  {jQuery} Element to add class to
+   * @param  {string} Class name that will be prefixed and added to element
+   * @return {jQuery}
+   */
+  function addClass($element, className) {
+    return $element.addClass(prefixed(className));
+  }
+
+  /**
+   * jQuery.removeClass with auto-prefixing
+   * @param  {jQuery} Element to remove class from
+   * @param  {string} Class name that will be prefixed and removed from element
+   * @return {jQuery}
+   */
+  function removeClass($element, className) {
+    return $element.removeClass(prefixed(className));
+  }
+
+  /**
+   * jQuery.toggleClass with auto-prefixing
+   * @param  {jQuery}  Element where class will be toggled
+   * @param  {string}  Class name that will be prefixed and toggled
+   * @param  {boolean} Optional boolean that determines if class will be added or removed
+   * @return {jQuery}
+   */
+  function toggleClass($element, className, shouldAdd) {
+    return $element.toggleClass(prefixed(className), shouldAdd);
+  }
+
+  /**
+   * Create a new DOM element wrapped in a jQuery object,
+   * decorated with our custom methods.
+   * @param  {string} className
+   * @param  {string} [tag]
+   * @return {jQuery}
+   */
+  function dom(className, tag) {
+    return addClass($(document.createElement(tag || 'div')), className);
+  }
+
+  function svgDataUri(width, height) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '"/>';
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURI(svg);
+  }
+
+  // Compute some dimensions manually for iOS < 8, because of buggy support for VH.
+  // Also, Android built-in browser does not support viewport units.
+  (function () {
+    var ua = window.navigator.userAgent;
+    var iOSRegex = /(iPhone|iPad|iPod);[^OS]*OS (\d)/;
+    var iOSMatches = ua.match(iOSRegex);
+    var android = ua.indexOf('Android ') > -1 && ua.indexOf('Chrome') === -1;
+
+    if (!android && (!iOSMatches || iOSMatches[2] > 7)) {
+      return;
+    }
+
+    var styleNode = document.createElement('style');
+    document.head.appendChild(styleNode);
+    window.addEventListener('orientationchange', refresh, true);
+
+    function refresh() {
+      var vh = window.innerHeight;
+      var vw = window.innerWidth;
+      var content = '.w-lightbox-content, .w-lightbox-view, .w-lightbox-view:before {' + 'height:' + vh + 'px' + '}' + '.w-lightbox-view {' + 'width:' + vw + 'px' + '}' + '.w-lightbox-group, .w-lightbox-group .w-lightbox-view, .w-lightbox-group .w-lightbox-view:before {' + 'height:' + 0.86 * vh + 'px' + '}' + '.w-lightbox-image {' + 'max-width:' + vw + 'px;' + 'max-height:' + vh + 'px' + '}' + '.w-lightbox-group .w-lightbox-image {' + 'max-height:' + 0.86 * vh + 'px' + '}' + '.w-lightbox-strip {' + 'padding: 0 ' + 0.01 * vh + 'px' + '}' + '.w-lightbox-item {' + 'width:' + 0.1 * vh + 'px;' + 'padding:' + 0.02 * vh + 'px ' + 0.01 * vh + 'px' + '}' + '.w-lightbox-thumbnail {' + 'height:' + 0.1 * vh + 'px' + '}' + '@media (min-width: 768px) {' + '.w-lightbox-content, .w-lightbox-view, .w-lightbox-view:before {' + 'height:' + 0.96 * vh + 'px' + '}' + '.w-lightbox-content {' + 'margin-top:' + 0.02 * vh + 'px' + '}' + '.w-lightbox-group, .w-lightbox-group .w-lightbox-view, .w-lightbox-group .w-lightbox-view:before {' + 'height:' + 0.84 * vh + 'px' + '}' + '.w-lightbox-image {' + 'max-width:' + 0.96 * vw + 'px;' + 'max-height:' + 0.96 * vh + 'px' + '}' + '.w-lightbox-group .w-lightbox-image {' + 'max-width:' + 0.823 * vw + 'px;' + 'max-height:' + 0.84 * vh + 'px' + '}' + '}';
+
+      styleNode.textContent = content;
+    }
+
+    refresh();
+  })();
+
+  return lightbox;
+}
+
+Webflow.define('lightbox', module.exports = function ($) {
+  var api = {};
+  var inApp = Webflow.env();
+  var lightbox = createLightbox(window, document, $, inApp ? '#lightbox-mountpoint' : 'body');
+  var $doc = $(document);
+  var $lightboxes;
+  var designer;
+  var namespace = '.w-lightbox';
+  var groups;
+
+  // -----------------------------------
+  // Module methods
+
+  api.ready = api.design = api.preview = init;
+
+  // -----------------------------------
+  // Private methods
+
+  function init() {
+    designer = inApp && Webflow.env('design');
+
+    // Reset Lightbox
+    lightbox.destroy();
+
+    // Reset groups
+    groups = {};
+
+    // Find all instances on the page
+    $lightboxes = $doc.find(namespace);
+
+    // Instantiate all lighboxes
+    $lightboxes.webflowLightBox();
+  }
+
+  jQuery.fn.extend({
+    webflowLightBox: function webflowLightBox() {
+      var $el = this;
+      $.each($el, function (i, el) {
+        // Store state in data
+        var data = $.data(el, namespace);
+        if (!data) {
+          data = $.data(el, namespace, {
+            el: $(el),
+            mode: 'images',
+            images: [],
+            embed: ''
+          });
+        }
+
+        // Remove old events
+        data.el.off(namespace);
+
+        // Set config from json script tag
+        configure(data);
+
+        // Add events based on mode
+        if (designer) {
+          data.el.on('setting' + namespace, configure.bind(null, data));
+        } else {
+          data.el.on('tap' + namespace, tapHandler(data))
+          // Prevent page scrolling to top when clicking on lightbox triggers.
+          .on('click' + namespace, function (e) {
+            e.preventDefault();
+          });
+        }
+      });
+    }
+  });
+
+  function configure(data) {
+    var json = data.el.children('.w-json').html();
+    var groupName;
+    var groupItems;
+
+    if (!json) {
+      data.items = [];
+      return;
+    }
+
+    try {
+      json = JSON.parse(json);
+    } catch (e) {
+      console.error('Malformed lightbox JSON configuration.', e);
+    }
+
+    supportOldLightboxJson(json);
+
+    groupName = json.group;
+
+    if (groupName) {
+      groupItems = groups[groupName];
+      if (!groupItems) {
+        groupItems = groups[groupName] = [];
+      }
+
+      data.items = groupItems;
+
+      if (json.items.length) {
+        data.index = groupItems.length;
+        groupItems.push.apply(groupItems, json.items);
+      }
+    } else {
+      data.items = json.items;
+    }
+  }
+
+  function tapHandler(data) {
+    return function () {
+      data.items.length && lightbox(data.items, data.index || 0);
+    };
+  }
+
+  function supportOldLightboxJson(data) {
+    if (data.images) {
+      data.images.forEach(function (item) {
+        item.type = 'image';
+      });
+      data.items = data.images;
+    }
+
+    if (data.embed) {
+      data.embed.type = 'video';
+      data.items = [data.embed];
+    }
+
+    if (data.groupId) {
+      data.group = data.groupId;
+    }
+  }
+
+  // Export module
+  return api;
+});
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1938,7 +3193,7 @@ Webflow.define('links', module.exports = function ($, _) {
 });
 
 /***/ }),
-/* 8 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1946,7 +3201,7 @@ Webflow.define('links', module.exports = function ($, _) {
  */
 
 var Webflow = __webpack_require__(0);
-var IXEvents = __webpack_require__(9);
+var IXEvents = __webpack_require__(1);
 
 Webflow.define('navbar', module.exports = function ($, _) {
   var api = {};
@@ -2334,129 +3589,7 @@ Webflow.define('navbar', module.exports = function ($, _) {
 });
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var IXEvents = __webpack_require__(10);
-
-function dispatchCustomEvent(element, eventName) {
-  var event = document.createEvent('CustomEvent');
-  event.initCustomEvent(eventName, true, true, null);
-  element.dispatchEvent(event);
-}
-
-/**
- * Webflow: IX Event triggers for other modules
- */
-
-var $ = window.jQuery;
-var api = {};
-var namespace = '.w-ix';
-
-var eventTriggers = {
-  reset: function reset(i, el) {
-    IXEvents.triggers.reset(i, el);
-  },
-  intro: function intro(i, el) {
-    IXEvents.triggers.intro(i, el);
-    dispatchCustomEvent(el, 'COMPONENT_ACTIVE');
-  },
-  outro: function outro(i, el) {
-    IXEvents.triggers.outro(i, el);
-    dispatchCustomEvent(el, 'COMPONENT_INACTIVE');
-  }
-};
-
-api.triggers = {};
-
-api.types = {
-  INTRO: 'w-ix-intro' + namespace,
-  OUTRO: 'w-ix-outro' + namespace
-};
-
-$.extend(api.triggers, eventTriggers);
-
-module.exports = api;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Webflow: IX Event triggers for other modules
- */
-
-var $ = window.jQuery;
-var api = {};
-var eventQueue = [];
-var namespace = '.w-ix';
-
-var eventTriggers = {
-  reset: function reset(i, el) {
-    el.__wf_intro = null;
-  },
-  intro: function intro(i, el) {
-    if (el.__wf_intro) {
-      return;
-    }
-    el.__wf_intro = true;
-    $(el).triggerHandler(api.types.INTRO);
-  },
-  outro: function outro(i, el) {
-    if (!el.__wf_intro) {
-      return;
-    }
-    el.__wf_intro = null;
-    $(el).triggerHandler(api.types.OUTRO);
-  }
-};
-
-api.triggers = {};
-
-api.types = {
-  INTRO: 'w-ix-intro' + namespace,
-  OUTRO: 'w-ix-outro' + namespace
-};
-
-// Trigger any events in queue + restore trigger methods
-api.init = function () {
-  var count = eventQueue.length;
-  for (var i = 0; i < count; i++) {
-    var memo = eventQueue[i];
-    memo[0](0, memo[1]);
-  }
-  eventQueue = [];
-  $.extend(api.triggers, eventTriggers);
-};
-
-// Replace all triggers with async wrapper to queue events until init
-api.async = function () {
-  for (var key in eventTriggers) {
-    var func = eventTriggers[key];
-    if (!eventTriggers.hasOwnProperty(key)) {
-      continue;
-    }
-
-    // Replace trigger method with async wrapper
-    api.triggers[key] = function (i, el) {
-      eventQueue.push([func, el]);
-    };
-  }
-};
-
-// Default triggers to async queue
-api.async();
-
-module.exports = api;
-
-/***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -2481,11 +3614,6 @@ Webflow.define('scroll', module.exports = function ($) {
   }
 
   function ready() {
-    // If hash is already present on page load, scroll to it right away
-    if (loc.hash) {
-      findEl(loc.hash.substring(1));
-    }
-
     // The current page url without the hash part.
     var locHref = loc.href.split('#')[0];
 
@@ -2616,7 +3744,774 @@ Webflow.define('scroll', module.exports = function ($) {
 });
 
 /***/ }),
-/* 12 */
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Webflow: Slider component
+ */
+
+var Webflow = __webpack_require__(0);
+var IXEvents = __webpack_require__(1);
+
+Webflow.define('slider', module.exports = function ($, _) {
+  var api = {};
+  var tram = $.tram;
+  var $doc = $(document);
+  var $sliders;
+  var designer;
+  var inApp = Webflow.env();
+  var namespace = '.w-slider';
+  var dot = '<div class="w-slider-dot" data-wf-ignore />';
+  var ix = IXEvents.triggers;
+  var fallback;
+  var inRedraw;
+
+  // -----------------------------------
+  // Module methods
+
+  api.ready = function () {
+    designer = Webflow.env('design');
+    init();
+  };
+
+  api.design = function () {
+    designer = true;
+    init();
+  };
+
+  api.preview = function () {
+    designer = false;
+    init();
+  };
+
+  api.redraw = function () {
+    inRedraw = true;
+    init();
+  };
+
+  api.destroy = removeListeners;
+
+  // -----------------------------------
+  // Private methods
+
+  function init() {
+    // Find all sliders on the page
+    $sliders = $doc.find(namespace);
+    if (!$sliders.length) {
+      return;
+    }
+    $sliders.filter(':visible').each(build);
+    inRedraw = null;
+    if (fallback) {
+      return;
+    }
+
+    removeListeners();
+    addListeners();
+  }
+
+  function removeListeners() {
+    Webflow.resize.off(renderAll);
+    Webflow.redraw.off(api.redraw);
+  }
+
+  function addListeners() {
+    Webflow.resize.on(renderAll);
+    Webflow.redraw.on(api.redraw);
+  }
+
+  function renderAll() {
+    $sliders.filter(':visible').each(render);
+  }
+
+  function build(i, el) {
+    var $el = $(el);
+
+    // Store slider state in data
+    var data = $.data(el, namespace);
+    if (!data) {
+      data = $.data(el, namespace, {
+        index: 0,
+        depth: 1,
+        el: $el,
+        config: {}
+      });
+    }
+    data.mask = $el.children('.w-slider-mask');
+    data.left = $el.children('.w-slider-arrow-left');
+    data.right = $el.children('.w-slider-arrow-right');
+    data.nav = $el.children('.w-slider-nav');
+    data.slides = data.mask.children('.w-slide');
+    data.slides.each(ix.reset);
+    if (inRedraw) {
+      data.maskWidth = 0;
+    }
+
+    // Disable in old browsers
+    if (!tram.support.transform) {
+      data.left.hide();
+      data.right.hide();
+      data.nav.hide();
+      fallback = true;
+      return;
+    }
+
+    // Remove old events
+    data.el.off(namespace);
+    data.left.off(namespace);
+    data.right.off(namespace);
+    data.nav.off(namespace);
+
+    // Set config from data attributes
+    configure(data);
+
+    // Add events based on mode
+    if (designer) {
+      data.el.on('setting' + namespace, handler(data));
+      stopTimer(data);
+      data.hasTimer = false;
+    } else {
+      data.el.on('swipe' + namespace, handler(data));
+      data.left.on('tap' + namespace, previousFunction(data));
+      data.right.on('tap' + namespace, next(data));
+
+      // Start timer if autoplay is true, only once
+      if (data.config.autoplay && !data.hasTimer) {
+        data.hasTimer = true;
+        data.timerCount = 1;
+        startTimer(data);
+      }
+    }
+
+    // Listen to nav events
+    data.nav.on('tap' + namespace, '> div', handler(data));
+
+    // Remove gaps from formatted html (for inline-blocks)
+    if (!inApp) {
+      data.mask.contents().filter(function () {
+        return this.nodeType === 3;
+      }).remove();
+    }
+
+    // Run first render
+    render(i, el);
+  }
+
+  function configure(data) {
+    var config = {};
+
+    config.crossOver = 0;
+
+    // Set config options from data attributes
+    config.animation = data.el.attr('data-animation') || 'slide';
+    if (config.animation === 'outin') {
+      config.animation = 'cross';
+      config.crossOver = 0.5;
+    }
+    config.easing = data.el.attr('data-easing') || 'ease';
+
+    var duration = data.el.attr('data-duration');
+    config.duration = duration != null ? parseInt(duration, 10) : 500;
+
+    if (isAttrTrue(data.el.attr('data-infinite'))) {
+      config.infinite = true;
+    }
+
+    if (isAttrTrue(data.el.attr('data-disable-swipe'))) {
+      config.disableSwipe = true;
+    }
+
+    if (isAttrTrue(data.el.attr('data-hide-arrows'))) {
+      config.hideArrows = true;
+    } else if (data.config.hideArrows) {
+      data.left.show();
+      data.right.show();
+    }
+
+    if (isAttrTrue(data.el.attr('data-autoplay'))) {
+      config.autoplay = true;
+      config.delay = parseInt(data.el.attr('data-delay'), 10) || 2000;
+      config.timerMax = parseInt(data.el.attr('data-autoplay-limit'), 10);
+      // Disable timer on first touch or mouse down
+      var touchEvents = 'mousedown' + namespace + ' touchstart' + namespace;
+      if (!designer) {
+        data.el.off(touchEvents).one(touchEvents, function () {
+          stopTimer(data);
+        });
+      }
+    }
+
+    // Use edge buffer to help calculate page count
+    var arrowWidth = data.right.width();
+    config.edge = arrowWidth ? arrowWidth + 40 : 100;
+
+    // Store config in data
+    data.config = config;
+  }
+
+  function isAttrTrue(value) {
+    return value === '1' || value === 'true';
+  }
+
+  function previousFunction(data) {
+    return function () {
+      change(data, { index: data.index - 1, vector: -1 });
+    };
+  }
+
+  function next(data) {
+    return function () {
+      change(data, { index: data.index + 1, vector: 1 });
+    };
+  }
+
+  function select(data, value) {
+    // Select page based on slide element index
+    var found = null;
+    if (value === data.slides.length) {
+      init();layout(data); // Rebuild and find new slides
+    }
+    _.each(data.anchors, function (anchor, index) {
+      $(anchor.els).each(function (i, el) {
+        if ($(el).index() === value) {
+          found = index;
+        }
+      });
+    });
+    if (found != null) {
+      change(data, { index: found, immediate: true });
+    }
+  }
+
+  function startTimer(data) {
+    stopTimer(data);
+    var config = data.config;
+    var timerMax = config.timerMax;
+    if (timerMax && data.timerCount++ > timerMax) {
+      return;
+    }
+    data.timerId = window.setTimeout(function () {
+      if (data.timerId == null || designer) {
+        return;
+      }
+      next(data)();
+      startTimer(data);
+    }, config.delay);
+  }
+
+  function stopTimer(data) {
+    window.clearTimeout(data.timerId);
+    data.timerId = null;
+  }
+
+  function handler(data) {
+    return function (evt, options) {
+      options = options || {};
+      var config = data.config;
+
+      // Designer settings
+      if (designer && evt.type === 'setting') {
+        if (options.select === 'prev') {
+          return previousFunction(data)();
+        }
+        if (options.select === 'next') {
+          return next(data)();
+        }
+        configure(data);
+        layout(data);
+        if (options.select == null) {
+          return;
+        }
+        select(data, options.select);
+        return;
+      }
+
+      // Swipe event
+      if (evt.type === 'swipe') {
+        if (config.disableSwipe) {
+          return;
+        }
+        if (Webflow.env('editor')) {
+          return;
+        }
+        if (options.direction === 'left') {
+          return next(data)();
+        }
+        if (options.direction === 'right') {
+          return previousFunction(data)();
+        }
+        return;
+      }
+
+      // Page buttons
+      if (data.nav.has(evt.target).length) {
+        change(data, { index: $(evt.target).index() });
+      }
+    };
+  }
+
+  function change(data, options) {
+    options = options || {};
+    var config = data.config;
+    var anchors = data.anchors;
+
+    // Set new index
+    data.previous = data.index;
+    var index = options.index;
+    var shift = {};
+    if (index < 0) {
+      index = anchors.length - 1;
+      if (config.infinite) {
+        // Shift first slide to the end
+        shift.x = -data.endX;
+        shift.from = 0;
+        shift.to = anchors[0].width;
+      }
+    } else if (index >= anchors.length) {
+      index = 0;
+      if (config.infinite) {
+        // Shift last slide to the start
+        shift.x = anchors[anchors.length - 1].width;
+        shift.from = -anchors[anchors.length - 1].x;
+        shift.to = shift.from - shift.x;
+      }
+    }
+    data.index = index;
+
+    // Select page nav
+    var active = data.nav.children().eq(data.index).addClass('w-active');
+    data.nav.children().not(active).removeClass('w-active');
+
+    // Hide arrows
+    if (config.hideArrows) {
+      data.index === anchors.length - 1 ? data.right.hide() : data.right.show();
+      data.index === 0 ? data.left.hide() : data.left.show();
+    }
+
+    // Get page offset from anchors
+    var lastOffsetX = data.offsetX || 0;
+    var offsetX = data.offsetX = -anchors[data.index].x;
+    var resetConfig = { x: offsetX, opacity: 1, visibility: '' };
+
+    // Transition slides
+    var targets = $(anchors[data.index].els);
+    var prevTargs = $(anchors[data.previous] && anchors[data.previous].els);
+    var others = data.slides.not(targets);
+    var animation = config.animation;
+    var easing = config.easing;
+    var duration = Math.round(config.duration);
+    var vector = options.vector || (data.index > data.previous ? 1 : -1);
+    var fadeRule = 'opacity ' + duration + 'ms ' + easing;
+    var slideRule = 'transform ' + duration + 'ms ' + easing;
+
+    // Trigger IX events
+    if (!designer) {
+      targets.each(ix.intro);
+      others.each(ix.outro);
+    }
+
+    // Set immediately after layout changes (but not during redraw)
+    if (options.immediate && !inRedraw) {
+      tram(targets).set(resetConfig);
+      resetOthers();
+      return;
+    }
+
+    // Exit early if index is unchanged
+    if (data.index === data.previous) {
+      return;
+    }
+
+    // Cross Fade / Out-In
+    if (animation === 'cross') {
+      var reduced = Math.round(duration - duration * config.crossOver);
+      var wait = Math.round(duration - reduced);
+      fadeRule = 'opacity ' + reduced + 'ms ' + easing;
+      tram(prevTargs).set({ visibility: '' }).add(fadeRule).start({ opacity: 0 });
+      tram(targets).set({ visibility: '', x: offsetX, opacity: 0, zIndex: data.depth++ }).add(fadeRule).wait(wait).then({ opacity: 1 }).then(resetOthers);
+      return;
+    }
+
+    // Fade Over
+    if (animation === 'fade') {
+      tram(prevTargs).set({ visibility: '' }).stop();
+      tram(targets).set({ visibility: '', x: offsetX, opacity: 0, zIndex: data.depth++ }).add(fadeRule).start({ opacity: 1 }).then(resetOthers);
+      return;
+    }
+
+    // Slide Over
+    if (animation === 'over') {
+      resetConfig = { x: data.endX };
+      tram(prevTargs).set({ visibility: '' }).stop();
+      tram(targets).set({ visibility: '', zIndex: data.depth++, x: offsetX + anchors[data.index].width * vector }).add(slideRule).start({ x: offsetX }).then(resetOthers);
+      return;
+    }
+
+    // Slide - infinite scroll
+    if (config.infinite && shift.x) {
+      tram(data.slides.not(prevTargs)).set({ visibility: '', x: shift.x }).add(slideRule).start({ x: offsetX });
+      tram(prevTargs).set({ visibility: '', x: shift.from }).add(slideRule).start({ x: shift.to });
+      data.shifted = prevTargs;
+    } else {
+      if (config.infinite && data.shifted) {
+        tram(data.shifted).set({ visibility: '', x: lastOffsetX });
+        data.shifted = null;
+      }
+
+      // Slide - basic scroll
+      tram(data.slides).set({ visibility: '' }).add(slideRule).start({ x: offsetX });
+    }
+
+    // Helper to move others out of view
+    function resetOthers() {
+      targets = $(anchors[data.index].els);
+      others = data.slides.not(targets);
+      if (animation !== 'slide') {
+        resetConfig.visibility = 'hidden';
+      }
+      tram(others).set(resetConfig);
+    }
+  }
+
+  function render(i, el) {
+    var data = $.data(el, namespace);
+    if (!data) {
+      return;
+    }
+    if (maskChanged(data)) {
+      return layout(data);
+    }
+    if (designer && slidesChanged(data)) {
+      layout(data);
+    }
+  }
+
+  function layout(data) {
+    // Determine page count from width of slides
+    var pages = 1;
+    var offset = 0;
+    var anchor = 0;
+    var width = 0;
+    var maskWidth = data.maskWidth;
+    var threshold = maskWidth - data.config.edge;
+    if (threshold < 0) {
+      threshold = 0;
+    }
+    data.anchors = [{ els: [], x: 0, width: 0 }];
+    data.slides.each(function (i, el) {
+      if (anchor - offset > threshold) {
+        pages++;
+        offset += maskWidth;
+        // Store page anchor for transition
+        data.anchors[pages - 1] = { els: [], x: anchor, width: 0 };
+      }
+      // Set next anchor using current width + margin
+      width = $(el).outerWidth(true);
+      anchor += width;
+      data.anchors[pages - 1].width += width;
+      data.anchors[pages - 1].els.push(el);
+    });
+    data.endX = anchor;
+
+    // Build dots if nav exists and needs updating
+    if (designer) {
+      data.pages = null;
+    }
+    if (data.nav.length && data.pages !== pages) {
+      data.pages = pages;
+      buildNav(data);
+    }
+
+    // Make sure index is still within range and call change handler
+    var index = data.index;
+    if (index >= pages) {
+      index = pages - 1;
+    }
+    change(data, { immediate: true, index: index });
+  }
+
+  function buildNav(data) {
+    var dots = [];
+    var $dot;
+    var spacing = data.el.attr('data-nav-spacing');
+    if (spacing) {
+      spacing = parseFloat(spacing) + 'px';
+    }
+    for (var i = 0; i < data.pages; i++) {
+      $dot = $(dot);
+      if (data.nav.hasClass('w-num')) {
+        $dot.text(i + 1);
+      }
+      if (spacing != null) {
+        $dot.css({
+          'margin-left': spacing,
+          'margin-right': spacing
+        });
+      }
+      dots.push($dot);
+    }
+    data.nav.empty().append(dots);
+  }
+
+  function maskChanged(data) {
+    var maskWidth = data.mask.width();
+    if (data.maskWidth !== maskWidth) {
+      data.maskWidth = maskWidth;
+      return true;
+    }
+    return false;
+  }
+
+  function slidesChanged(data) {
+    var slidesWidth = 0;
+    data.slides.each(function (i, el) {
+      slidesWidth += $(el).outerWidth(true);
+    });
+    if (data.slidesWidth !== slidesWidth) {
+      data.slidesWidth = slidesWidth;
+      return true;
+    }
+    return false;
+  }
+
+  // Export module
+  return api;
+});
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Webflow: Tabs component
+ */
+
+var Webflow = __webpack_require__(0);
+var IXEvents = __webpack_require__(1);
+
+Webflow.define('tabs', module.exports = function ($) {
+  var api = {};
+  var tram = $.tram;
+  var $doc = $(document);
+  var $tabs;
+  var design;
+  var env = Webflow.env;
+  var safari = env.safari;
+  var inApp = env();
+  var tabAttr = 'data-w-tab';
+  var namespace = '.w-tabs';
+  var linkCurrent = 'w--current';
+  var tabActive = 'w--tab-active';
+  var ix = IXEvents.triggers;
+
+  var inRedraw = false;
+
+  // -----------------------------------
+  // Module methods
+
+  api.ready = api.design = api.preview = init;
+
+  api.redraw = function () {
+    inRedraw = true;
+    init();
+    inRedraw = false;
+  };
+
+  api.destroy = function () {
+    $tabs = $doc.find(namespace);
+    if (!$tabs.length) {
+      return;
+    }
+    $tabs.each(resetIX);
+    removeListeners();
+  };
+
+  // -----------------------------------
+  // Private methods
+
+  function init() {
+    design = inApp && Webflow.env('design');
+
+    // Find all instances on the page
+    $tabs = $doc.find(namespace);
+    if (!$tabs.length) {
+      return;
+    }
+    $tabs.each(build);
+    if (Webflow.env('preview') && !inRedraw) {
+      $tabs.each(resetIX);
+    }
+
+    removeListeners();
+    addListeners();
+  }
+
+  function removeListeners() {
+    Webflow.redraw.off(api.redraw);
+  }
+
+  function addListeners() {
+    Webflow.redraw.on(api.redraw);
+  }
+
+  function resetIX(i, el) {
+    var data = $.data(el, namespace);
+    if (!data) {
+      return;
+    }
+    data.links && data.links.each(ix.reset);
+    data.panes && data.panes.each(ix.reset);
+  }
+
+  function build(i, el) {
+    var $el = $(el);
+
+    // Store state in data
+    var data = $.data(el, namespace);
+    if (!data) {
+      data = $.data(el, namespace, { el: $el, config: {} });
+    }
+    data.current = null;
+    data.menu = $el.children('.w-tab-menu');
+    data.links = data.menu.children('.w-tab-link');
+    data.content = $el.children('.w-tab-content');
+    data.panes = data.content.children('.w-tab-pane');
+
+    // Remove old events
+    data.el.off(namespace);
+    data.links.off(namespace);
+
+    // Set config from data attributes
+    configure(data);
+
+    // Wire up events when not in design mode
+    if (!design) {
+      data.links.on('click' + namespace, linkSelect(data));
+
+      // Trigger first intro event from current tab
+      var $link = data.links.filter('.' + linkCurrent);
+      var tab = $link.attr(tabAttr);
+      tab && changeTab(data, { tab: tab, immediate: true });
+    }
+  }
+
+  function configure(data) {
+    var config = {};
+
+    // Set config options from data attributes
+    config.easing = data.el.attr('data-easing') || 'ease';
+
+    var intro = parseInt(data.el.attr('data-duration-in'), 10);
+    intro = config.intro = intro === intro ? intro : 0;
+
+    var outro = parseInt(data.el.attr('data-duration-out'), 10);
+    outro = config.outro = outro === outro ? outro : 0;
+
+    config.immediate = !intro && !outro;
+
+    // Store config in data
+    data.config = config;
+  }
+
+  function linkSelect(data) {
+    return function (evt) {
+      var tab = evt.currentTarget.getAttribute(tabAttr);
+      tab && changeTab(data, { tab: tab });
+    };
+  }
+
+  function changeTab(data, options) {
+    options = options || {};
+
+    var config = data.config;
+    var easing = config.easing;
+    var tab = options.tab;
+
+    // Don't select the same tab twice
+    if (tab === data.current) {
+      return;
+    }
+    data.current = tab;
+
+    // Select the current link
+    data.links.each(function (i, el) {
+      var $el = $(el);
+      if (el.getAttribute(tabAttr) === tab) {
+        $el.addClass(linkCurrent).each(ix.intro);
+      } else if ($el.hasClass(linkCurrent)) {
+        $el.removeClass(linkCurrent).each(ix.outro);
+      }
+    });
+
+    // Find the new tab panes and keep track of previous
+    var targets = [];
+    var previous = [];
+    data.panes.each(function (i, el) {
+      var $el = $(el);
+      if (el.getAttribute(tabAttr) === tab) {
+        targets.push(el);
+      } else if ($el.hasClass(tabActive)) {
+        previous.push(el);
+      }
+    });
+
+    var $targets = $(targets);
+    var $previous = $(previous);
+
+    // Switch tabs immediately and bypass transitions
+    if (options.immediate || config.immediate) {
+      $targets.addClass(tabActive).each(ix.intro);
+      $previous.removeClass(tabActive);
+      // Redraw to benefit components in the hidden tab pane
+      // But only if not currently in the middle of a redraw
+      if (!inRedraw) {
+        Webflow.redraw.up();
+      }
+      return;
+    }
+
+    // Fade out the currently active tab before intro
+    if ($previous.length && config.outro) {
+      $previous.each(ix.outro);
+      tram($previous).add('opacity ' + config.outro + 'ms ' + easing, { fallback: safari }).start({ opacity: 0 }).then(intro);
+    } else {
+      // Skip the outro and play intro
+      intro();
+    }
+
+    // Fade in the new target
+    function intro() {
+      // Clear previous active class + styles touched by tram
+      // We cannot remove the whole inline style because it could be dynamically bound
+      $previous.removeClass(tabActive).css({
+        opacity: '',
+        transition: '',
+        transform: '',
+        width: '',
+        height: ''
+      });
+
+      // Add active class to new target
+      $targets.addClass(tabActive).each(ix.intro);
+      Webflow.redraw.up();
+
+      // Set opacity immediately if intro is zero
+      if (!config.intro) {
+        return tram($targets).set({ opacity: 1 });
+      }
+
+      // Otherwise fade in opacity
+      tram($targets).set({ opacity: 0 }).redraw().add('opacity ' + config.intro + 'ms ' + easing, { fallback: safari }).start({ opacity: 1 });
+    }
+  }
+
+  // Export module
+  return api;
+});
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -2765,4 +4660,17 @@ Webflow.define('touch', module.exports = function ($) {
 });
 
 /***/ })
-/******/ ]);
+/******/ ]);/**
+ * ----------------------------------------------------------------------
+ * Webflow: Interactions: Init
+ */
+Webflow.require('ix').init([
+  {"slug":"fade-in-bottom-page-loads","name":"Fade in bottom (page loads)","value":{"style":{"opacity":0,"x":"0px","y":"50px","z":"0px"},"triggers":[{"type":"load","stepsA":[{"opacity":1,"transition":"transform 1000ms ease 0ms, opacity 1000ms ease 0ms","x":"0px","y":"0px","z":"0px"}],"stepsB":[]}]}},
+  {"slug":"fade-in-left-scroll-in","name":"Fade in left (scroll in)","value":{"style":{"opacity":0,"x":"-50px","y":"0px","z":"0px"},"triggers":[{"type":"scroll","stepsA":[{"opacity":1,"transition":"transform 1000ms ease 0ms, opacity 1000ms ease 0ms","x":"0px","y":"0px","z":"0px"}],"stepsB":[]}]}},
+  {"slug":"fade-in-right-scroll-in","name":"Fade in right (scroll in)","value":{"style":{"opacity":0,"x":"50px","y":"0px","z":"0px"},"triggers":[{"type":"scroll","stepsA":[{"opacity":1,"transition":"transform 1000ms ease 0ms, opacity 1000ms ease 0ms","x":"0px","y":"0px","z":"0px"}],"stepsB":[]}]}},
+  {"slug":"fade-in-top-scroll-in","name":"Fade in top (scroll in)","value":{"style":{"opacity":0,"x":"0px","y":"-50px","z":"0px"},"triggers":[{"type":"scroll","stepsA":[{"opacity":1,"transition":"transform 1000ms ease 0ms, opacity 1000ms ease 0ms","x":"0px","y":"0px","z":"0px"}],"stepsB":[]}]}},
+  {"slug":"fade-in-bottom-scroll-in","name":"Fade in bottom (scroll in)","value":{"style":{"opacity":0,"x":"0px","y":"50px","z":"0px"},"triggers":[{"type":"scroll","stepsA":[{"opacity":1,"transition":"transform 1000ms ease 0ms, opacity 1000ms ease 0ms","x":"0px","y":"0px","z":"0px"}],"stepsB":[]}]}},
+  {"slug":"bounce-in-scroll-in","name":"Bounce in (scroll in)","value":{"style":{"opacity":0,"scaleX":0.6000000000000003,"scaleY":0.6000000000000003,"scaleZ":1},"triggers":[{"type":"scroll","stepsA":[{"opacity":1,"transition":"transform 600ms ease 0ms, opacity 600ms ease 0ms","scaleX":1.08,"scaleY":1.08,"scaleZ":1},{"transition":"transform 150ms ease-out-cubic 0ms","scaleX":1,"scaleY":1,"scaleZ":1}],"stepsB":[]}]}},
+  {"slug":"scale-on-scroll","name":"Scale on Scroll","value":{"style":{"opacity":0,"scaleX":0.01,"scaleY":0.01,"scaleZ":1},"triggers":[{"type":"scroll","stepsA":[{"opacity":1,"transition":"transform 600ms ease 0ms, opacity 600ms ease 0ms","scaleX":1,"scaleY":1,"scaleZ":1}],"stepsB":[]}]}},
+  {"slug":"new-interaction","name":"New Interaction","value":{"style":{},"triggers":[]}}
+]);
