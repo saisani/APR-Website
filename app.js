@@ -44,7 +44,7 @@ app.use(bodyParser.json());
 
 // view engine setup. don't need it now for current static pages
 // app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+app.set('view engine', 'jade');
 
 // setting up passport configuration
 require('./config/passport');
@@ -73,6 +73,9 @@ app.use('/registration', express.static('routes/registration_page'));
 app.use('/login', express.static('routes/login_page'));
 app.use('/login-error', express.static('routes/login_error_page'));
 app.use('/pricing', express.static('routes/pricing_page'));
+
+// Resources:
+app.use('/resources', express.static('routes/resources_page'));
 
 // Private Webpages:
 app.use('/dashboard', isLoggedIn, express.static('routes/dashboard_page'));
