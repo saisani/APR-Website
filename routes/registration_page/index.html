@@ -283,6 +283,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="js/webflow.js" type="text/javascript"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
   <script>
+  	$('#email-form').mailgun_validator({
+    api_key: 'pubkey-8ef6facb31805d3fd4a16084fdabd1d8',
+    in_progress: in_progress_callback, // called when request is made to validator
+    success: success_callback,         // called when validator has returned
+    error: validation_error,           // called when an error reaching the validator has occured
+});
+
+  </script>
+  <script>
   $('#quicksearch').on('keyup keypress', function(e) {
   var keyCode = e.keyCode || e.which;
   if (keyCode === 13) { 
