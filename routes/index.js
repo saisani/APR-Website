@@ -30,7 +30,7 @@ router.get('/logout', function(req, res, next) {
 /* Login Page */
 router.post('/login', passport.authenticate('local-login', {
     successRedirect: '/dashboard',
-    failureRedirect: '/login',
+    failureRedirect: 'https://www.apracing.io/#contact',
 }));
 
 /* Processing Stripe Payment and SignIn Registration */
@@ -44,13 +44,13 @@ router.post('/charge', function(req, res, next) {
     if( req.body.flname &&
         req.body.schoolname &&
         req.body.email &&
-        req.body.password &&
-        req.body.password_conf &&
-        req.body.teamname )
+        req.body.teamname_reg &&
+        req.body.password_reg &&
+        req.body.password_conf )
     {
         // make sure the passwords match
         if( req.body.password != req.body.password_conf ) {
-            return res.redirect('/registration');
+            return res.redirect('https://www.apracing.io/#contact');
         }
 
         // creating entry for collection
@@ -66,7 +66,7 @@ router.post('/charge', function(req, res, next) {
         User.create(userData, function(error, user) {
             if( error ) {
                 console.log(error);
-                return res.redirect('/registration');
+                return res.redirect('https://www.apracing.io/#contact');
             }
             
             req.logIn(user, function(){

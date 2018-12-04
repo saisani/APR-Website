@@ -73,6 +73,7 @@ app.use('/registration', express.static('routes/registration_page'));
 app.use('/login', express.static('routes/login_page'));
 app.use('/login-error', express.static('routes/login_error_page'));
 app.use('/pricing', express.static('routes/pricing_page'));
+app.use('/email-confirmation', express.static('routes/email_confirmation_page'));
 
 // Resources:
 app.use('/resources', express.static('routes/resources_page'));

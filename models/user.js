@@ -8,6 +8,7 @@ var UserSchema = new mongoose.Schema({
   },
   teamname: {
     type: String,
+    required: true,
     unique: true,
     trim: true
   },
@@ -21,9 +22,12 @@ var UserSchema = new mongoose.Schema({
   },
   email : {
   	type: String,
-  	unique: true,
   	required: true,
   	trim: true
+  },
+  isVerified : {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -35,28 +39,6 @@ UserSchema.methods.generateHash = function(password) {
 UserSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
-
-//authenticate input against database
-UserSchema.statics.authenticate = function (email, password, callback) {
-  User.findOne({ email: email })
-    .exec(function (err, user) {
-      if (err) {
-        return callback(err)
-      } else if (!user) {
-        var err = new Error('User not found.');
-        err.status = 401;
-        console.log("hit here");
-        return callback(err);
-      }
-      bcrypt.compare(password, user.password, function (err, result) {
-        if (result === true) {
-          return callback(null, user);
-        } else {
-          return callback();
-        }
-      })
-    });
-}
 
 //hashing a password before saving it to the database
 UserSchema.pre('save', function (next) {

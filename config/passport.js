@@ -17,10 +17,10 @@ passport.deserializeUser(function(id, done) {
 
 // strategy for login
 passport.use('local-login', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'teamname',
     passwordField: 'password'
 }, function(username, password, done) {
-    User.findOne({ email:username }, function(err, user) {
+    User.findOne({ teamname:username }, function(err, user) {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
