@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
+// Will have be redone for AWS DynamoDB
 var UserSchema = new mongoose.Schema({
   flname: {
     type: String,
@@ -16,6 +17,10 @@ var UserSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  location: {
+    type: String,
+    trim: true
+  },
   password: {
     type: String,
     required: true,
@@ -26,6 +31,10 @@ var UserSchema = new mongoose.Schema({
   	trim: true
   },
   isVerified : {
+    type: Boolean,
+    default: false
+  },
+  hasPaid : {
     type: Boolean,
     default: false
   }
