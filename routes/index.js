@@ -7,18 +7,7 @@ var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    // return res.sendFile(path.join(__dirname + '/template/index.html'));
-    return res.redirect('/');
-});
-
-/* GET Sign In page */
-router.get('/registration', function(req, res, next) {
-    return res.redirect('/registration');
-});
-
-/* Get Login page */
-router.get('/login', function(req, res, next) {
-    return res.redirect('/login');
+    return res.render('main');
 });
 
 /* Logout */
@@ -30,7 +19,7 @@ router.get('/logout', function(req, res, next) {
 /* Login Page */
 router.post('/login', passport.authenticate('local-login', {
     successRedirect: '/dashboard',
-    failureRedirect: 'https://www.apracing.io/#contact',
+    failureRedirect: '/',
 }));
 
 /* Processing Stripe Payment and SignIn Registration */
