@@ -23,7 +23,11 @@
       <div class="nav-inner">
         <div class="nav-logo-wrap"><a href="#" class="brand w-nav-brand"><img src="images/cutmypic-1.png" width="120" alt=""></a></div>
         <div class="nav-menu-wrap">
-          <nav role="navigation" class="nav-menu-2 w-nav-menu"><a href="https://drive.google.com/open?id=1l-X6zYBVa_qDIqyrLwnus0grjU9t02Ji" class="nav-link w-nav-link">Rules</a><a href="/resources" class="nav-link w-nav-link">Resources</a><a href="#contact" class="nav-link w-nav-link">Login</a><a href="#contact" class="button w-button">Sign Up</a></nav>
+          <nav role="navigation" class="nav-menu-2 w-nav-menu">
+            <a href="https://drive.google.com/open?id=1l-X6zYBVa_qDIqyrLwnus0grjU9t02Ji" class="nav-link w-nav-link">Rules</a>
+            <a href="/resources" class="nav-link w-nav-link">Resources</a>
+            <a href="#contact" class="nav-link w-nav-link">Login</a>
+            <a href="#contact" class="button w-button">Sign Up</a></nav>
           <div class="menu-button w-nav-button">
             <div class="menu-icon w-icon-nav-menu"></div>
           </div>
@@ -156,7 +160,10 @@
       <h2 class="heading-16">Login</h2>
       <div class="w-container">
         <div class="w-form">
-          <form id="email-form" name="email-form" data-name="Email Form" class="form-5 w-clearfix"><input type="text" name="Team-Name" data-name="Team Name" placeholder="Enter your Team Name" maxlength="256" required="" id="Team-Name" class="field w-input"><input type="password" name="Password" data-name="Password" placeholder="Password" maxlength="256" required="" id="Password" class="field-2 w-input"><input type="submit" value="Login" data-wait="Please wait..." class="button-2 w-button"></form>
+          <form method="post" action="/login" id="email-form" name="email-form" data-name="Email Form" class="form-5 w-clearfix">
+            <input type="text" name="teamname" data-name="Team Name" placeholder="Enter your Team Name" maxlength="256" required="" id="Team-Name" class="field w-input">
+            <input type="password" name="password" data-name="Password" placeholder="Password" maxlength="256" required="" id="Password" class="field-2 w-input">
+            <input type="submit" value="Login" data-wait="Please wait..." class="button-2 w-button"></form>
           <div class="w-form-done">
             <div>Thank you! Your submission has been received!</div>
           </div>
@@ -170,7 +177,16 @@
       <h2 class="heading-17">Register</h2>
       <div class="w-container">
         <div class="form-block-2 w-form">
-          <form id="email-form-2" name="email-form-2" data-name="Email Form 2" class="form-4 w-clearfix"><input type="text" class="text-field w-input" maxlength="256" name="Name" data-name="Name" placeholder="Enter your first name" id="Name-2" required=""><input type="text" class="text-field-3 w-input" maxlength="256" name="School" data-name="School" placeholder="School" id="School-2" required=""><input type="text" class="text-field-2 w-input" maxlength="256" name="Location" data-name="Location" placeholder="Location" id="Location" required=""><input type="text" class="text-field-4 w-input" maxlength="256" name="Team-Name" data-name="Team Name" placeholder="Team Name" id="Team-Name-2" required=""><input type="email" class="text-field-5 w-input" maxlength="256" name="Email" data-name="Email" placeholder="Email" id="Email" required=""><input type="password" class="text-field-6 w-input" maxlength="256" name="Password" data-name="Password" placeholder="Password " id="Password-2" required=""><input type="password" class="text-field-7 w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Confirm Password" id="Password-3" required=""><input type="submit" value="Sign Up" data-wait="Please wait..." class="button-3 w-button"></form>
+          <form id="email-form-2" name="email-form-2" data-name="Email Form 2" class="form-4 w-clearfix">
+            <input type="text" class="text-field w-input" maxlength="256" name="flname" data-name="Name" placeholder="Enter your first name" id="Name-2" required="">
+            <input type="text" class="text-field-3 w-input" maxlength="256" name="schoolname" data-name="School" placeholder="School" id="School-2" required="">
+            <input type="text" class="text-field-2 w-input" maxlength="256" name="location" data-name="Location" placeholder="Location" id="Location" required="">
+            <input type="text" class="text-field-4 w-input" maxlength="256" name="teamname_reg" data-name="Team Name" placeholder="Team Name" id="Team-Name-2" required="">
+            <input type="email" class="text-field-5 w-input" maxlength="256" name="email_reg" data-name="Email" placeholder="Email" id="Email" required="">
+            <input type="password" class="text-field-6 w-input" maxlength="256" name="password_reg" data-name="Password" placeholder="Password " id="Password-2" required="">
+            <input type="password" class="text-field-7 w-input" maxlength="256" name="password_conf" data-name="Password 2" placeholder="Confirm Password" id="Password-3" required="">
+            <input type="submit" value="Sign Up" data-wait="Please wait..." class="button-3 w-button">
+          </form>
           <div class="w-form-done">
             <div>Thank you! Your submission has been received!</div>
           </div>

@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // view engine setup. don't need it now for current static pages
-// app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // setting up passport configuration
@@ -64,23 +64,24 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+
+// components for rendering
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // loading static pages but should switch to a render model for the leaderboard
-// Public Webpages:
-app.use('/', express.static('routes/main_page'));
-app.use('/registration', express.static('routes/registration_page'));
-app.use('/login', express.static('routes/login_page'));
-app.use('/login-error', express.static('routes/login_error_page'));
-app.use('/pricing', express.static('routes/pricing_page'));
-
-// Resources:
-app.use('/resources', express.static('routes/resources_page'));
-
-// Private Webpages:
-app.use('/dashboard', isLoggedIn, express.static('routes/dashboard_page'));
+// PUBLIC WEBPAGES:
+// app.use('/', express.static('routes/main_page'));
 app.use('/bom', express.static('routes/bom_page'));
 app.use('/build', express.static('routes/build_car_page'));
+// app.use('/login', express.static('routes/login_page'));
+// app.use('/login-error', express.static('routes/login_error_page'));
+app.use('/email-confirmation', express.static('routes/email_confirmation_page'));
+
+// RESOURCES:
+app.use('/resources', express.static('routes/resources_page'));
+
+// PRIVATE WEBPAGES:
+app.use('/dashboard', isLoggedIn, express.static('routes/dashboard_page'));
 
 // routers
 app.use('/', indexRouter);
