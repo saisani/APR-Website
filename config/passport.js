@@ -23,15 +23,15 @@ passport.use('local-login', new LocalStrategy({
     User.findOne({teamname: username}, function(err, user) {
       if(err) return done(err);
       if(!user) {
-        console.log("NO USER");
+        //console.log("NO USER");
         return done(null, false, {message: 'Incorrect username.'});
       }
       if(!user.isVerified) {
-        console.log("NOT VERIFIED");
+        //console.log("NOT VERIFIED");
         return done(null, false, {message: 'Not verified'});
       }
       if(!user.validPassword(password)) {
-        console.log("WRONG PASSWORD");
+        //console.log("WRONG PASSWORD");
         return done(null, false, { message: 'Incorrect password.' });
       }
       return done(null, user);
