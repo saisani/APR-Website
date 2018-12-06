@@ -140,7 +140,7 @@ router.post('/registration', function(req, res, next) {
                             button: {
                                 color: '#22BC66',
                                 text: 'Confirm your account',
-                                link: `https://apracing.io/confirmation/${registration_token}`
+                                link: `https://www.apracing.io/confirmation/${registration_token}`
                                 //link:`http://localhost:3000/confirmation${registration_token}`
                             }
                         },
