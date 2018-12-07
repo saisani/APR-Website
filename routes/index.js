@@ -122,7 +122,7 @@ router.post('/charge', function(req, res, next) {
                 var emailOptions = {
                     body: {
                         name: firstName,
-                        intro: 'Thanks for signing up to APR! You\'ve joined a collective of other teams just like yours who want to build and race robot cars.',
+                        intro: 'Thanks for signing up to APR!',
                         action: {
                             instructions: 'To start, confirm your email address and sign into your dashboard by clicking the button below.',
                             button: {
