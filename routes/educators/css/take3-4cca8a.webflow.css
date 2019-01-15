@@ -1,0 +1,888 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.header {
+  text-align: center;
+}
+
+.navbar {
+  margin-right: 6em;
+  margin-left: 6em;
+  background-color: transparent;
+}
+
+.background-video {
+  height: 800px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(25, 29, 34, .75)), to(rgba(25, 29, 34, .75)));
+  background-image: linear-gradient(180deg, rgba(25, 29, 34, .75), rgba(25, 29, 34, .75));
+  font-size: 13px;
+}
+
+.logo {
+  width: 110px;
+  height: 60px;
+  margin-top: 25px;
+  float: left;
+  background-image: url('../images/global-sa42ef3fae4.png');
+  background-position: 0px -667px;
+}
+
+.header-menu {
+  padding: 10px 15px;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.header-menu:hover {
+  color: #f36;
+}
+
+.nav-menu {
+  padding-top: 40px;
+}
+
+.div-block {
+  width: 110px;
+}
+
+.sign-up-button {
+  margin-left: 15px;
+  padding-right: 30px;
+  padding-left: 30px;
+  border: 1px solid #f36;
+  border-radius: 46px;
+  background-color: transparent;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  color: #f36;
+  font-weight: 700;
+}
+
+.sign-up-button:hover {
+  background-color: #f36;
+  color: #fff;
+}
+
+.hero-titile {
+  margin-top: 150px;
+  margin-bottom: 40px;
+  font-size: 3.75em;
+  font-weight: 500;
+  letter-spacing: 3px;
+}
+
+.hero-subtitle {
+  margin-bottom: 50px;
+  font-size: 1.5em;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.link-block {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 2px -1666px;
+  background-size: 130px;
+  -webkit-transition: opacity 200ms ease;
+  transition: opacity 200ms ease;
+}
+
+.link-block:hover {
+  opacity: 0.81;
+}
+
+.get-started-button {
+  margin-top: 50px;
+  padding: 20px 40px;
+  border-radius: 46px;
+  background-color: #f36;
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.get-started-button:hover {
+  background-color: #f42156;
+}
+
+.down-arrow {
+  position: absolute;
+  left: 50%;
+  bottom: 0px;
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 13px 2203px;
+  background-size: 170px;
+  -webkit-transform: translate(-50%, 0px);
+  -ms-transform: translate(-50%, 0px);
+  transform: translate(-50%, 0px);
+}
+
+.clients {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 1040px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 50px;
+  padding-left: 50px;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.client-logo {
+  display: inline-block;
+  width: 110px;
+  height: 50px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 0px 0px;
+  background-size: 120px;
+}
+
+.client-logo.airnb {
+  background-position: 21px -60px;
+}
+
+.client-logo.shopify {
+  background-position: 12px -580px;
+}
+
+.client-logo.sales-force {
+  height: 50px;
+  background-position: 23px -531px;
+}
+
+.client-logo.twitter {
+  background-position: 38px -711px;
+}
+
+.client-logo.netflix {
+  background-position: 20px -1490px;
+}
+
+.client-logo.dropbox {
+  background-position: 5px -826px;
+}
+
+.client-logo.huge {
+  background-position: 27px -389px;
+}
+
+.body {
+  font-size: 16px;
+}
+
+.powerful-design {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.left {
+  display: inline-block;
+  overflow: hidden;
+  width: 50%;
+  float: left;
+}
+
+.right {
+  display: inline-block;
+  overflow: hidden;
+  width: 50%;
+  max-height: 932px;
+}
+
+.container {
+  display: block;
+  overflow: hidden;
+  max-width: 1920px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.texts {
+  display: block;
+  max-width: 34.375em;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.content-title {
+  margin-top: 3.28571em;
+  margin-bottom: 0.94286em;
+  color: #333c4e;
+  font-size: 2.1875em;
+  line-height: 48px;
+  font-weight: 300;
+}
+
+.content-paragraph {
+  margin-bottom: 3.125em;
+  color: #7e8890;
+  font-size: 1em;
+  line-height: 1.9em;
+}
+
+.twitter-logo {
+  max-height: 19px;
+  margin-bottom: 0.9375em;
+}
+
+.twitter-logo.houzz {
+  width: 80px;
+  height: 36px;
+}
+
+.content-quote {
+  margin-bottom: 1.875em;
+  color: #7e8890;
+  font-size: 0.875em;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.author-name {
+  display: inline-block;
+  margin-bottom: 1.875em;
+  margin-left: 15px;
+  color: #7e8890;
+  font-size: 0.875em;
+  font-style: italic;
+}
+
+.image {
+  position: absolute;
+  right: 50%;
+  overflow: hidden;
+  max-width: 1273px;
+}
+
+.seamless-design {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.right-image {
+  max-width: 1300px;
+}
+
+.image-left {
+  width: 1235px;
+  height: 766px;
+}
+
+.design-driven {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.reimagined-design {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.real-time {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.magical-design {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.feedback {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #cfd5e1;
+}
+
+.houzz-logo {
+  margin-bottom: 0.94em;
+}
+
+.testimonials {
+  height: 700px;
+  margin-bottom: 150px;
+  text-align: center;
+}
+
+.all-tab-content {
+  height: 700px;
+}
+
+.tab1-content {
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: -36px;
+  height: 700px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-image: url('../images/home-background-quote-mailchimp.jpg');
+  background-size: cover;
+}
+
+.testimonials-heading {
+  max-width: 850px;
+  margin-top: 0px;
+  margin-bottom: 50px;
+  color: #fff;
+  font-size: 2.5em;
+  line-height: 1.6;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.testimonial-intro {
+  margin-bottom: 30px;
+  color: #939da5;
+  font-size: 0.875em;
+  letter-spacing: 0.15em;
+}
+
+.tab-content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 700px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.tab2-content {
+  background-image: url('../images/home-background-quote-twitter.jpg');
+  background-position: 0px 0px;
+  background-size: cover;
+}
+
+.tab3-content {
+  background-image: url('../images/home-background-quote-netflix.jpg');
+  background-position: 0px 0px;
+  background-size: cover;
+}
+
+.tab4-content {
+  background-image: url('../images/home-background-quote-uber.jpg');
+  background-position: 0px 0px;
+  background-size: cover;
+}
+
+.tab5-content {
+  background-image: url('../images/home-background-quote-evernote.jpg');
+  background-position: 0px 0px;
+  background-size: cover;
+}
+
+.tab-menu {
+  margin-top: -37px;
+  margin-right: 20px;
+  margin-left: 20px;
+  padding: 0px;
+  background-color: transparent;
+  opacity: 1;
+}
+
+.tab-menu.w--current {
+  background-color: transparent;
+  opacity: 1;
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+}
+
+.testimonial-profile {
+  width: 75px;
+  height: 75px;
+  margin-bottom: 20px;
+  border-radius: 52px;
+  background-color: #fff;
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 0px -1676px;
+  background-size: 107px;
+  opacity: 1;
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+
+.testimonial-profile:hover {
+  -webkit-transform: scale(1.15);
+  -ms-transform: scale(1.15);
+  transform: scale(1.15);
+}
+
+.testimonial-profile.mailchimp {
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: -1px -1673px;
+  background-size: 107px;
+}
+
+.testimonial-profile.twitter-profile {
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 0px -1856px;
+  background-size: 107px;
+}
+
+.testimonial-profile.netflix {
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 0px -1765px;
+  background-size: 107px;
+}
+
+.testimonial-profile.uber {
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 0px -1946px;
+  background-size: 107px;
+}
+
+.testimonial-profile.evernote {
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 0px -1581px;
+  background-size: 107px;
+}
+
+.testimonial-company-logo {
+  height: 25px;
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 4px -2216px;
+  background-size: 110px;
+}
+
+.testimonial-company-logo.mailchimp {
+  background-position: 4px -2216px;
+}
+
+.testimonial-company-logo.twitter-blue {
+  background-position: 28px -2378px;
+  background-size: 115px;
+}
+
+.testimonial-company-logo.netflix-logo {
+  background-position: 17px -2346px;
+  background-size: 115px;
+}
+
+.testimonial-company-logo.uber-logo {
+  background-position: 18px -2404px;
+  background-size: 115px;
+}
+
+.testimonial-company-logo.evernote-logo {
+  background-position: 4px -2202px;
+  background-size: 111px;
+}
+
+.companies {
+  padding-bottom: 100px;
+  text-align: center;
+}
+
+.text-block {
+  margin-bottom: 50px;
+  color: #939da5;
+  font-size: 0.9375em;
+  font-weight: 400;
+}
+
+.small-container {
+  display: block;
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.company-logos {
+  display: inline-block;
+  width: 200px;
+  height: 50px;
+  margin-top: 22px;
+  margin-bottom: 22px;
+  background-image: url('../images/home-s2852c4f65e.png');
+  background-position: 85px -740px;
+  background-size: 125px;
+  background-repeat: no-repeat;
+}
+
+.company-logos.uber-black {
+  background-position: 68px -780px;
+}
+
+.company-logos.linkdn-black {
+  background-position: 52px -447px;
+}
+
+.company-logos.salesforce {
+  background-position: 69px -552px;
+}
+
+.company-logos.evernote-black {
+  background-position: 44px -360px;
+}
+
+.company-logos.shopify-black {
+  background-position: 55px -607px;
+}
+
+.company-logos.adobe {
+  background-position: 51px -319px;
+}
+
+.company-logos.sony {
+  background-position: 54px -643px;
+}
+
+.company-logos.nike {
+  background-position: 69px -496px;
+}
+
+.company-logos.zendesk {
+  background-position: 36px -821px;
+}
+
+.company-logos.soundcloud {
+  background-position: 62px -691px;
+}
+
+.company-logos.huge-black {
+  background-position: 69px -407px;
+}
+
+.getstarted {
+  padding-top: 160px;
+  padding-bottom: 145px;
+  background-color: #323a45;
+  font-size: 15px;
+  text-align: center;
+}
+
+.get-started-free-title {
+  margin-top: 0px;
+  margin-bottom: 55px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.text-span {
+  font-weight: 600;
+}
+
+.name-field {
+  display: inline-block;
+  width: 280px;
+  height: 63px;
+  margin-right: 10px;
+  padding: 15px 15px 15px 25px;
+  border-radius: 40px;
+  color: #8a959e;
+  font-size: 18px;
+}
+
+.email-field {
+  display: inline-block;
+  width: 280px;
+  height: 63px;
+  margin-right: 10px;
+  padding: 15px 15px 15px 25px;
+  border-radius: 40px;
+  color: #8a959e;
+  font-size: 18px;
+}
+
+.password-field {
+  display: inline-block;
+  width: 280px;
+  height: 63px;
+  margin-right: 10px;
+  padding: 15px 15px 15px 25px;
+  border-radius: 40px;
+  color: #8a959e;
+  font-size: 18px;
+}
+
+.form-submit-button {
+  height: 63px;
+  padding: 20px 40px;
+  border-radius: 50px;
+  background-color: #f36;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  font-weight: 700;
+}
+
+.form-submit-button:hover {
+  background-color: #f42156;
+}
+
+.terms {
+  margin-top: 40px;
+  color: #747c83;
+  font-size: 12px;
+}
+
+.terms-link {
+  color: #747c82;
+  text-decoration: underline;
+}
+
+.terms-link:hover {
+  color: #fff;
+}
+
+.footer {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  color: #747c83;
+}
+
+.footer-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 1320px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 10px;
+  padding-left: 10px;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  line-height: 2.2em;
+}
+
+.footer-menus {
+  display: inline-block;
+}
+
+.footer-logo {
+  width: 110px;
+  height: 50px;
+  background-image: url('../images/global-sa42ef3fae4.png');
+  background-position: 0px -601px;
+  background-size: 137px;
+}
+
+.copyright {
+  margin-bottom: 40px;
+  font-size: 11px;
+}
+
+.footer-menu-title {
+  color: #323a45;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.footer-menu-link {
+  display: block;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  color: #323a45;
+  font-size: 12px;
+  line-height: 2.2em;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.footer-menu-link:hover {
+  color: #f36;
+}
+
+.footer-menu-link.selected {
+  color: #f37;
+}
+
+.social-font {
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  font-family: Socialico, sans-serif;
+  color: #55acee;
+  font-size: 30px;
+}
+
+.social-font:hover {
+  color: #2795e9;
+}
+
+.social-font.dribble {
+  color: #ea4c89;
+}
+
+.social-font.dribble:hover {
+  color: #e51e6b;
+}
+
+.social-font.google {
+  color: #d34836;
+}
+
+.social-font.google:hover {
+  color: #b03626;
+}
+
+.social-font.facebook {
+  color: #44619f;
+}
+
+.social-font.facebook:hover {
+  color: #354b7b;
+}
+
+.social-font.invision {
+  color: #f80;
+}
+
+.social-font.invision:hover {
+  color: #cc6d00;
+}
+
+.link-block-2 {
+  margin-right: 5px;
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+.scroll-nav {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  display: block;
+  height: auto;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding: 15px 6em;
+  border-bottom: 1px solid #e4e4e4;
+  background-color: #fff;
+}
+
+.brand {
+  width: 40px;
+  height: 60px;
+  margin-top: -20px;
+  background-image: url('../images/global-sa42ef3fae4.png');
+  background-position: 6px -608px;
+  background-size: 120px;
+}
+
+.scrolled-menu {
+  padding: 10px 15px;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  color: #8a959e;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.scrolled-menu:hover {
+  color: #f36;
+}
+
+.sign-up-button-pink {
+  padding: 10px 30px;
+  border-radius: 23px;
+  background-color: #f36;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  font-weight: 700;
+}
+
+.sign-up-button-pink:hover {
+  background-color: #f42156;
+}
+
+.italic-text {
+  font-style: normal;
+}
+
+.image-2 {
+  margin-top: 17px;
+}
+
+.image-3 {
+  margin-top: 28px;
+}
+
+.image-4 {
+  margin-top: 17px;
+}
+
+@font-face {
+  font-family: 'Socialico';
+  src: url('../fonts/Socialico.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
