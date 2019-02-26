@@ -76,12 +76,14 @@ app.use('/build', express.static('routes/build_car_page'));
 // app.use('/login', express.static('routes/login_page'));
 // app.use('/login-error', express.static('routes/login_error_page'));
 app.use('/email-confirmation', express.static('routes/email_confirmation_page'));
+app.use('/educator-confirmation', express.static('routes/educator_confirmation_page'));
 
 // RESOURCES:
 app.use('/resources', express.static('routes/resources_page'));
 
 // PRIVATE WEBPAGES:
 app.use('/dashboard', isLoggedIn, express.static('routes/dashboard_page'));
+app.use('/educators', express.static('routes/educators_page'));
 
 // routers
 app.use('/', indexRouter);

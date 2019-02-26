@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var router = express.Router();
 var User = require('../models/user');
+var Educator = require('../models/educator');
 var stripe = require('stripe')(process.env.STRIPE_SKEY);
 var passport = require('passport');
 var nodemailer = require('nodemailer');
@@ -180,6 +181,35 @@ router.post('/registration', function(req, res, next) {
 
     //else return res.redirect('https://www.apracing.io/#contact')
     else return res.redirect('/');
+});
+
+// saving information from educators
+router.post('/educators', function(req, res, next) {
+    
+    if(req.body.flname && req.body.email)
+    {
+        // checking if email has valid form
+        var email_reg = req.body.email;
+        var isEmail = emailValidater.validate(email_reg);
+        if (!isEmail) return res.redirect('/educators');
+        
+        // first and last name of educator
+        let flname_reg = req.body.flname;
+
+        // encapsulating educator input data
+        var educatorData = 
+        {
+            name: flname_reg, 
+            email: email_reg
+        };
+
+        Educator.create(educatorData, function(error, educator) {
+            if (error) return res.redirect('/educators');
+            else return res.redirect('/educator-confirmation');
+        });
+    }
+
+    else return res.redirect('https://www.apracing.io/#email-form');
 });
 
 module.exports = router;
