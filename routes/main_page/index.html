@@ -114,7 +114,10 @@
     <div class="small-container">
       <h2 class="get-started-free-title">Join a growing community of young innovators. Autonomous motorsport with APR.</h2>
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form"><input type="text" id="name" name="name" data-name="Name" placeholder="Your Name" maxlength="256" class="name-field w-input"><input type="email" id="email" name="email" data-name="Email" placeholder="Email Address" maxlength="256" required="" class="email-field w-input"><input type="submit" value="Race robot cars!" data-wait="Please wait..." class="form-submit-button w-button"></form>
+        <form method="post" action="/short-registration" id="email-form" name="email-form" data-name="Email Form">
+          <input type="text" id="name" name="name" data-name="Name" placeholder="Your Name" maxlength="256" class="name-field w-input">
+          <input type="email" id="email" name="email" data-name="Email" placeholder="Email Address" maxlength="256" required="" class="email-field w-input">
+          <input type="submit" value="Race robot cars!" data-wait="Please wait..." class="form-submit-button w-button"></form>
         <div class="w-form-done">
           <div>Thank you! Your submission has been received!</div>
         </div>
