@@ -70,13 +70,13 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // loading static pages but should switch to a render model for the leaderboard
 // PUBLIC WEBPAGES:
-// app.use('/', express.static('routes/main_page'));
+app.use('/', express.static('routes/main_page'));
 app.use('/bom', express.static('routes/bom_page'));
 app.use('/build', express.static('routes/build_car_page'));
 // app.use('/login', express.static('routes/login_page'));
 // app.use('/login-error', express.static('routes/login_error_page'));
 app.use('/email-confirmation', express.static('routes/email_confirmation_page'));
-app.use('/educator-confirmation', express.static('routes/educator_confirmation_page'));
+// app.use('/educator-confirmation', express.static('routes/educator_confirmation_page'));
 
 // RESOURCES:
 app.use('/resources', express.static('routes/resources_page'));
